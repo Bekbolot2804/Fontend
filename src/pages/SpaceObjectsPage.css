@@ -1,0 +1,26 @@
+.container {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
+  min-width: 800px;
+}
+.containerLoading {
+  filter: blur(8px);
+}
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container input[type=text]{
+  background-color: transparent;
+}
+
+@media (max-width: 600px) {
+  .container{
+    min-width: auto;
+  }
+}

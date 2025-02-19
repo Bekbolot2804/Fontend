@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+<!--    <link rel="icon" type="image/svg+xml" href="/vite.svg" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>РИП Лаб.5</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        transition: all 300ms;
+        font-family: "Public Sans", Roboto, Segoe UI, Helvetica, Arial, sans-serif;
+        color: black;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: #fff; /* Or your desired header background color */
+        z-index: 10; /* Ensure header stays on top */
+        padding: 1rem; /* Adjust padding as needed */
+      }
+      .footer {
+        position: fixed;
+        width: 100%;
+        height: 60px;
+        bottom: 0;
+        left: 0;
+        margin-top: 20px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

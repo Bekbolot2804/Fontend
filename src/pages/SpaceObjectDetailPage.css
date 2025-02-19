@@ -1,0 +1,27 @@
+.card {
+  margin-top: 24px;
+  padding: 8px;
+}
+.loadingBg {
+  z-index: 999;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.textStyle {
+  /*height:48px;*/
+  /*overflow:hidden;*/
+  overflow: visible;
+  /*text-overflow:ellipsis;*/
+  margin-bottom:12px;
+  white-space: normal;
+}
+.cardImage {
+  object-fit: contain;
+}
+.cardButton {
+  width: 100%;
+}
