@@ -27,7 +27,7 @@ export const BreadCrumbs: FC<BreadCrumbsProps> = (props) => {
             <li className="slash">/</li>
             {index === crumbs.length - 1 ? (
               <li>
-                {/*<Link to={ROUTES.SPACEOBJECTS}>{crumb.label}</Link>*/}
+                {/*<Link to={ROUTES.HELPOBJECTS}>{crumb.label}</Link>*/}
                 {crumb.label}
               </li>
             ) : (

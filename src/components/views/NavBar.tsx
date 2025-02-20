@@ -11,7 +11,7 @@ function NavBar() {
           {/*<Navbar.Brand href="/">Главная</Navbar.Brand>*/}
           <Nav className="me-auto">
             <Nav.Link href="/">Главная</Nav.Link>
-            {/*<Nav.Link href="/spaceobjects">Космические объекты</Nav.Link>*/}
+            {/*<Nav.Link href="/Helps">Космические объекты</Nav.Link>*/}
             {/*<Nav.Link href="#pricing">Pricing</Nav.Link>*/}
           </Nav>
         {/*</Container>*/}

@@ -1,32 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Card, Col, Row, Spinner } from 'react-bootstrap';
-import './SpaceObjectsPage.css';
-import { mockSpaceObjects } from '../modules/mock';
-import { BreadCrumbs } from "../components/BreadCrumbs";
+import './HelpsPage.css';
+import { mockHelps } from '../modules/mock.ts';
+import { BreadCrumbs } from "../components/BreadCrumbs.tsx";
 import { ROUTE_LABELS } from "../Routes.tsx";
 import defaultImage from "../assets/images/default_img.jpg"
 
-const SpaceObjectsPage = () => {
-  const [spaceObjects, setSpaceObjects] = useState([]);
-  const [allSpaceObjects, setAllSpaceObjects] = useState([]);
+const HelpsPage = () => {
+  const [Helps, setHelps] = useState([]);
+  const [allHelps, setAllHelps] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
-    const fetchSpaceObjects = async () => {
+    const fetchHelps = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/proxy/spaceobjects/`);
+        const response = await fetch(`/proxy/Helps/`);
         const data = await response.json();
-        setAllSpaceObjects(data['space objects']);
-        setSpaceObjects(data['space objects']);
+        setAllHelps(data['helps']);
+        setHelps(data['helps']);
       } catch (error) {
         console.error('.:Error fetching data:. -->> GET MOCK-OBJECT <<--', error);
-        setAllSpaceObjects(mockSpaceObjects['space objects']);
-        setSpaceObjects(mockSpaceObjects['space objects']);
+        setAllHelps(mockHelps['helps']);
+        setHelps(mockHelps['helps']);
       } finally {
         setIsLoading(false);
       }
@@ -37,7 +37,7 @@ const SpaceObjectsPage = () => {
       setSearchQuery(initialQuery);
       handleSearch(initialQuery); // загрузить результаты при загрузке страницы, если есть query
     } else {
-      fetchSpaceObjects();
+      fetchHelps();
     }
   }, []);
 
@@ -46,21 +46,21 @@ const SpaceObjectsPage = () => {
     setSearchParams({ object_search: query });
 
     if (!query) {
-      setSpaceObjects(allSpaceObjects);
+      setHelps(allHelps);
       return;
     }
 
     setIsLoading(true);
     try {
-      const response = await fetch(`/proxy/spaceobjects/?object_search=${encodeURIComponent(query)}`);
+      const response = await fetch(`/proxy/Helps/?object_search=${encodeURIComponent(query)}`);
       const data = await response.json();
-      setSpaceObjects(data['space objects']);
+      setHelps(data['helps']);
     } catch (error) {
       console.error('.:Error fetching search results:', error);
-      const filteredMockSpaceObjects = mockSpaceObjects['space objects'].filter(object =>
+      const filteredmockHelps = mockHelps['helps'].filter(object =>
           object.name.toLowerCase().includes(query.toLowerCase())
       );
-      setSpaceObjects(filteredMockSpaceObjects);
+      setHelps(filteredmockHelps);
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +73,7 @@ const SpaceObjectsPage = () => {
   };
 
   const handleCardClick = (id: number) => {
-    navigate(`/spaceobjects/${id}/`);
+    navigate(`/Helps/${id}/`);
   };
 
   if (isLoading) {
@@ -82,7 +82,7 @@ const SpaceObjectsPage = () => {
 
   return (
     <div className="container">
-      <BreadCrumbs crumbs={[{ label: ROUTE_LABELS.SPACEOBJECTS }]} />
+      <BreadCrumbs crumbs={[{ label: ROUTE_LABELS.HelpS }]} />
 
       <div className="search-container">
         <input
@@ -96,7 +96,7 @@ const SpaceObjectsPage = () => {
       </div>
 
       <Row xs={4} md={4} className="g-4">
-        {spaceObjects.map((object) => (
+        {Helps.map((object) => (
           <Col key={object.id}>
             <Card className="card text-start clickable-card" onClick={() => handleCardClick(object.id)}>
               <Card.Img variant="top" src={object.image_url || defaultImage} />
@@ -112,4 +112,4 @@ const SpaceObjectsPage = () => {
   );
 };
 
-export default SpaceObjectsPage;
+export default HelpsPage;
