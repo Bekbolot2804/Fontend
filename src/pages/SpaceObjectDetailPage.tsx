@@ -1,14 +1,15 @@
 import { FC, useEffect, useState } from "react";
-import { Card, Spinner } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { SpaceObject, getSpaceObjectById } from "../modules/spaceobjectAPI.ts";
+import { SpaceObject, getSpaceObjectById } from "../modules/SpaceObjectApi.ts";
 import "./SpaceObjectDetailPage.css";
 import { BreadCrumbs } from "../components/BreadCrumbs";
-import {ROUTE_LABELS, ROUTES} from "../Routes.tsx";
-import defaultImage from "../assets/images/default_img.jpg"
+import { ROUTE_LABELS, ROUTES } from "../Routes.tsx";
+import defaultImage from "../assets/images/default_img.jpg";
+
 
 const SpaceObjectDetailPage: FC = () => {
-  const { id } = useParams<{ id: string }>(); // Получаем параметр id из URL
+  const { id } = useParams<{ id: string }>();
   const [spaceObject, setSpaceObject] = useState<SpaceObject | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -32,13 +33,12 @@ const SpaceObjectDetailPage: FC = () => {
         setIsLoading(false);
       }
     };
-
     fetchSpaceObject();
   }, [id]);
 
-  // if (isLoading) {
-  //   return <Spinner animation="border" variant="dark" />;
-  // }
+  if (isLoading) {
+    return <p>Загрузка...</p>; // Используйте спиннер или текст загрузки
+  }
 
   if (!spaceObject) {
     return <p>Космический объект не найден</p>;
@@ -46,27 +46,26 @@ const SpaceObjectDetailPage: FC = () => {
 
   return (
     <div className="container">
-      {/*<BreadCrumbs crumbs={[{ label: `${ROUTE_LABELS.SPACEOBJECTS} / ${spaceObject.name}` }]} />*/}
-      <BreadCrumbs crumbs ={[
-        {label:ROUTE_LABELS.SPACEOBJECTS, path: ROUTES.SPACEOBJECTS},
-        {label: spaceObject.name || "Космический объект"},
-      ]}
-      >
-      </BreadCrumbs>
+      <BreadCrumbs
+        crumbs={[
+          { label: ROUTE_LABELS.SPACEOBJECTS, path: ROUTES.SPACEOBJECTS },
+          { label: spaceObject.name || "Космический объект" },
+        ]}
+      />
       <Card className="card">
         <Card.Img
           className="cardImage"
           variant="top"
-          src={spaceObject.image_url || defaultImage}
-          height={100}
-          width={100}
+          src={spaceObject.image_url && spaceObject.image_url.trim() !== '' ? spaceObject.image_url : defaultImage}
+          height="100px"
+          width="100px"
         />
         <Card.Body>
           <div className="textStyle">
-            <Card.Title>{spaceObject.name}</Card.Title>
+            <Card.Title>{spaceObject.name || "Нет названия"}</Card.Title>
           </div>
           <div className="textStyle">
-            <Card.Text>{spaceObject.description}</Card.Text>
+            <Card.Text>{spaceObject.description || "Нет описания"}</Card.Text>
           </div>
         </Card.Body>
       </Card>

@@ -1,6 +1,4 @@
-import React from "react"
 import './Head.css'
-import {HomePage} from "../../pages/HomePage.tsx";
 import {ROUTES} from "../../Routes.tsx";
 
 

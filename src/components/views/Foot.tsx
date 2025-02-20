@@ -1,4 +1,3 @@
-import React from "react"
 import './Foot.css'
 
 const Foot = () => {
