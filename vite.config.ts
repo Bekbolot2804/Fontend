@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/Frontend/', // Укажите название вашего репозитория
+  base: './', // Укажите название вашего репозитория
   server: {
     port: 3000,
     proxy: {
