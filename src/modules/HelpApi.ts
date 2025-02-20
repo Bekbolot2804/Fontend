@@ -1,22 +1,22 @@
-import { mockSpaceObjects } from './mock.ts';
+import { mockHelps } from './mock.ts';
 
-export interface SpaceObject {
+export interface Help {
   id: number;
   name: string;
   description: string;
   image_url: string;
 }
 
-export interface SpaceObjectResult {
+export interface HelpResult {
   resultCount: number;
-  results: SpaceObject[];
+  results: Help[];
 }
 
-export const getSpaceObjectById = async (
+export const getHelpById = async (
   id: number | string
-): Promise<SpaceObject | null> => {
+): Promise<Help | null> => {
   try {
-    const response = await fetch(`/proxy/spaceobjects/${id}/`);
+    const response = await fetch(`/proxy/Helps/${id}/`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -34,6 +34,6 @@ export const getSpaceObjectById = async (
     const numericId = typeof id === 'string' ? parseInt(id, 10) : id;
 
     // Возвращаем mock-объект, если произошла ошибка
-    return mockSpaceObjects['space objects'].find(obj => obj.id === numericId) || null;
+    return mockHelps['helps'].find(obj => obj.id === numericId) || null;
   }
 };

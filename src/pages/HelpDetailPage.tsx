@@ -1,26 +1,26 @@
 import { FC, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { SpaceObject, getSpaceObjectById } from "../modules/SpaceObjectApi.ts";
-import "./SpaceObjectDetailPage.css";
-import { BreadCrumbs } from "../components/BreadCrumbs";
+import { Help, getHelpById } from "../modules/HelpApi.ts";
+import "./HelpDetailPage.css";
+import { BreadCrumbs } from "../components/BreadCrumbs.tsx";
 import { ROUTE_LABELS, ROUTES } from "../Routes.tsx";
 import defaultImage from "../assets/images/default_img.jpg";
 
 
-const SpaceObjectDetailPage: FC = () => {
+const HelpDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [spaceObject, setSpaceObject] = useState<SpaceObject | null>(null);
+  const [Help, setHelp] = useState<Help | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSpaceObject = async () => {
+    const fetchHelp = async () => {
       setIsLoading(true);
       if (id) {
         try {
-          const data = await getSpaceObjectById(id);
+          const data = await getHelpById(id);
           if (data) {
-            setSpaceObject(data);
+            setHelp(data);
           } else {
             console.error("Space object not found");
           }
@@ -33,14 +33,14 @@ const SpaceObjectDetailPage: FC = () => {
         setIsLoading(false);
       }
     };
-    fetchSpaceObject();
+    fetchHelp();
   }, [id]);
 
   if (isLoading) {
     return <p>Загрузка...</p>; // Используйте спиннер или текст загрузки
   }
 
-  if (!spaceObject) {
+  if (!Help) {
     return <p>Космический объект не найден</p>;
   }
 
@@ -48,24 +48,24 @@ const SpaceObjectDetailPage: FC = () => {
     <div className="container">
       <BreadCrumbs
         crumbs={[
-          { label: ROUTE_LABELS.SPACEOBJECTS, path: ROUTES.SPACEOBJECTS },
-          { label: spaceObject.name || "Космический объект" },
+          { label: ROUTE_LABELS.HelpS, path: ROUTES.HelpS },
+          { label: Help.name || "Космический объект" },
         ]}
       />
       <Card className="card">
         <Card.Img
           className="cardImage"
           variant="top"
-          src={spaceObject.image_url && spaceObject.image_url.trim() !== '' ? spaceObject.image_url : defaultImage}
+          src={Help.image_url && Help.image_url.trim() !== '' ? Help.image_url : defaultImage}
           height="100px"
           width="100px"
         />
         <Card.Body>
           <div className="textStyle">
-            <Card.Title>{spaceObject.name || "Нет названия"}</Card.Title>
+            <Card.Title>{Help.name || "Нет названия"}</Card.Title>
           </div>
           <div className="textStyle">
-            <Card.Text>{spaceObject.description || "Нет описания"}</Card.Text>
+            <Card.Text>{Help.description || "Нет описания"}</Card.Text>
           </div>
         </Card.Body>
       </Card>
@@ -73,4 +73,4 @@ const SpaceObjectDetailPage: FC = () => {
   );
 };
 
-export default SpaceObjectDetailPage;
+export default HelpDetailPage;

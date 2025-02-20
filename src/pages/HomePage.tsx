@@ -13,7 +13,7 @@ export const HomePage: FC = () => {
             Добро пожаловать! Здесь вы можете Просмотреть
             справочник по медицинским услугам.
           </p>
-          <Link to={ROUTES.SPACEOBJECTS}>
+          <Link to={ROUTES.HelpS}>
             <Button variant="outline-dark">Просмотреть медицинские услуги</Button>
           </Link>
         </Col>
