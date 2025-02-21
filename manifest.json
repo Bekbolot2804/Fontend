@@ -1,0 +1,38 @@
+{
+    "name": "Tile Notes",
+    "short_name": "Tile Notes",
+    "start_url": "/Fontend/",
+    "display": "standalone",
+    "background_color": "#fdfdfd",
+    "theme_color": "#db4938",
+    "orientation": "portrait-primary",
+    "icons": [
+      {
+        "src": "/Fontend/icons/icon-192x192.png",
+        "type": "image/png", "sizes": "192x192"
+      },
+      {
+        "src": "/Fontend/icons/icon-512x512.png",
+        "type": "image/png", "sizes": "512x512"
+      },
+      {
+        "src": "/Fontend/icons/icon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      }
+    ],
+    "screenshots": [
+    {
+      "src": "/Fontend/icons/desktop-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/Fontend/icons/mobile-narrow.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+  }
