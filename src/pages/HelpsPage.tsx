@@ -100,7 +100,8 @@ const HelpsPage = () => {
           placeholder="Поиск"
         />
       </div>
-      <Row xs={4} md={4} className="g-4">
+      {/* Адаптивная сетка */}
+      <Row xs={1} sm={2} md={3} lg={4} className="g-4">
         {Helps.map((object) => (
           <Col key={object.id}>
             <Card className="card text-start clickable-card" onClick={() => handleCardClick(object.id)}>

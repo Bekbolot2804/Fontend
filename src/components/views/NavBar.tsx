@@ -5,18 +5,29 @@ import "./NavBar.css"
 function NavBar() {
   return (
     <>
-      <Navbar bg="blue" expand="lg" data-bs-theme="dark" fixed="top" className="my-navbar">
-        {/*<Container>*/}
-          {/*<Navbar.Brand href="/">Главная</Navbar.Brand>*/}
-          <Nav className="me-auto">
-            <Nav.Link href="/">Главная</Nav.Link>
-            {/*<Nav.Link href="/Helps">Космические объекты</Nav.Link>*/}
-            {/*<Nav.Link href="#pricing">Pricing</Nav.Link>*/}
-          </Nav>
-        {/*</Container>*/}
+      <Navbar bg="primary" expand="lg" data-bs-theme="dark" fixed="top" className="my-navbar">
+        <Nav className="me-auto">
+          <Nav.Link href="/">Главная</Nav.Link>
+        </Nav>
       </Navbar>
     </>
   );
 }
 
 export default NavBar;
+
+// "primary"
+
+// "secondary"
+
+// "success"
+
+// "danger"
+
+// "warning"
+
+// "info"
+
+// "light"
+
+// "dark"
