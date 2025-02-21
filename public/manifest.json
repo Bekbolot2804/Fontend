@@ -8,12 +8,31 @@
     "orientation": "portrait-primary",
     "icons": [
       {
-        "src": "/icon-192x192.png",
+        "src": "/icons/icon-192x192.png",
         "type": "image/png", "sizes": "192x192"
       },
       {
-        "src": "icon-512x512.png",
+        "src": "/icons/icon-512x512.png",
         "type": "image/png", "sizes": "512x512"
+      },
+      {
+        "src": "/icons/icon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
       }
-    ]
+    ],
+    "screenshots": [
+    {
+      "src": "/icons/desktop-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/icons/mobile-narrow.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
   }
