@@ -1,26 +1,13 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "handbook",
+  "productName": "client",
   "version": "0.1.0",
   "identifier": "com.tauri.dev",
   "build": {
-    "distDir": "../dist",
-    "devPath": "http://localhost:5173",
     "frontendDist": "../build",
-    "devUrl": "http://localhost:3000",
+    "devUrl": "https://localhost:3000",
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build"
-  },
-  "tauri": {
-    "allowlist": {
-      "fs": {
-        "readFile": true,
-        "writeFile": true
-      }
-    },
-    "shell": {
-        "open": true 
-    }
   },
   "app": {
     "windows": [
