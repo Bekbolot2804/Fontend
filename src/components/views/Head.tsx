@@ -3,14 +3,6 @@ import {ROUTES} from "../../Routes.tsx";
 
 
 
-// const Head = () => {
-//   return (
-//     <div>
-//       <Navbar />
-//     </div>
-//   )
-// }
-
 const Head = () => {
   return (
     <div className={'header'}>
