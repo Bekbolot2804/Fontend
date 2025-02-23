@@ -1,0 +1,37 @@
+{
+    "$schema": "./node_modules/@tauri-apps/cli/config.schema.json",
+    "build": {
+      "distDir": "../build",
+      "devPath": "https://localhost:3000",
+      "beforeDevCommand": "npm run dev",
+      "beforeBuildCommand": "npm run build"
+    },
+    "package": {
+      "productName": "client",
+      "version": "0.1.0"
+    },
+    "tauri": {
+      "bundle": {
+        "targets": "android",
+        "icon": [
+          "icons/32x32.png",
+          "icons/128x128.png",
+          "icons/128x128@2x.png",
+          "icons/icon.icns",
+          "icons/icon.ico"
+        ],
+        "identifier": "com.example.fontend"
+      },
+      "android": {
+        "package": "com.example.fontend",
+        "minSdkVersion": 21,
+        "targetSdkVersion": 33,
+        "allowDebug": true
+      },
+      "allowlist": {
+        "notification": {
+          "all": true
+        }
+      }
+    }
+  }
