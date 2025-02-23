@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Card, Col, Row } from 'react-bootstrap';
+import { Card, Col, Row, Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import { addToCart } from '../store/actions/cartActions';
 import './HelpsPage.css';
 import { mockHelps } from '../modules/mock.ts';
 import { BreadCrumbs } from "../components/BreadCrumbs.tsx";
 import { ROUTE_LABELS } from "../Routes.tsx";
 import defaultImage from "../assets/images/default_img.jpg";
-
-interface Help {
-  id: number;
-  name: string;
-  description: string;
-  image_url?: string;
-}
+import { Help } from '../types';
 
 const HelpsPage = () => {
   const [Helps, setHelps] = useState<Help[]>([]);
@@ -20,6 +17,8 @@ const HelpsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch<AppDispatch>();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   useEffect(() => {
     const fetchHelps = async () => {
@@ -82,6 +81,11 @@ const HelpsPage = () => {
     navigate(`/Helps/${id}/`);
   };
 
+  const handleAddToCart = (event: React.MouseEvent, help: Help) => {
+    event.stopPropagation();
+    dispatch(addToCart(help));
+  };
+
   return (
     <div className="container">
       <BreadCrumbs crumbs={[{ label: ROUTE_LABELS.HelpS }]} />
@@ -100,15 +104,29 @@ const HelpsPage = () => {
           placeholder="Поиск"
         />
       </div>
-      {/* Адаптивная сетка */}
       <Row xs={1} sm={2} md={3} lg={4} className="g-4">
         {Helps.map((object) => (
           <Col key={object.id}>
-            <Card className="card text-start clickable-card" onClick={() => handleCardClick(object.id)}>
-              <Card.Img variant="top" src={object.image_url && object.image_url.trim() !== '' ? object.image_url : defaultImage} />
+            <Card 
+              className="card text-start clickable-card" 
+              onClick={() => handleCardClick(object.id)}
+            >
+              <Card.Img 
+                variant="top" 
+                src={object.image_url && object.image_url.trim() !== '' ? object.image_url : defaultImage} 
+              />
               <Card.Body>
                 <Card.Title>{object.name || 'Нет названия'}</Card.Title>
-                <Card.Text>{object.description ? object.description.split(' ').slice(0, 16).join(' ') : 'Нет описания'}...</Card.Text>
+                <Card.Text>
+                  {object.description ? object.description.split(' ').slice(0, 16).join(' ') : 'Нет описания'}...
+                </Card.Text>
+                <Button
+                  variant="primary"
+                  className="mt-2"
+                  onClick={(e) => handleAddToCart(e, object)}
+                >
+                  Добавить в корзину ({cartItems.filter(item => item.id === object.id).length})
+                </Button>
               </Card.Body>
             </Card>
           </Col>
