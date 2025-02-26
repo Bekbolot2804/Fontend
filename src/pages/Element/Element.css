@@ -1,0 +1,22 @@
+.elementDescription {
+    font-family: inherit, sans-serif;
+    padding-top: 20px;
+}
+
+.elementPeriodTime {
+    font-family: inherit, sans-serif;
+}
+
+.elementName {
+    font-family: inherit, sans-serif;
+}
+
+.elementAttributes {
+    table-layout: fixed;
+    font-family: inherit, sans-serif;
+}
+
+.elementAttributesLabel {
+    font-family: inherit, sans-serif;
+    font-size: 16px;
+}

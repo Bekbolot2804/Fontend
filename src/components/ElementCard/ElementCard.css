@@ -1,0 +1,22 @@
+.cardImg {
+    padding: 16px 16px 0 16px;
+    height: 250px;
+}
+.card {
+    height: 430px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+
+}
+.cardTitle {
+    font-family: inherit, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #002E52; 
+}
+
+.cardText {
+    font-family: inherit, sans-serif;
+    color: #002E52; 
+}

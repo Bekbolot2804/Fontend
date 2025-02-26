@@ -1,9 +1,25 @@
 export const ROUTES = {
-    HOME: "/",
-    HelpS: "/Helps",
-}
+  MAIN: "/",
+  ELEMENTS: "/elements",
+  LOGIN: "/login",
+  REGISTRATION: "/registration",
+  ACCOUNT: "/account",
+  DECAYS: "/decays",
+  ELEMENTS_TABLE: "/elements_table",
+  ADDEDITELEMENT: '/elements_table/add_edit_element',
+  FORBIDDEN: '/403',
+  NOT_FOUND: '/404'
+  };
 export type RouteKeyType = keyof typeof ROUTES;
 export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
-    HOME: "Главная",
-    HelpS: "Первая помощь",
-};
+  MAIN: "Главная",
+  ELEMENTS: "Виды первой помощи",
+  LOGIN: "Вход",
+  REGISTRATION: "Регистрация",
+  ACCOUNT: "Личный кабинет",
+  DECAYS: "Поражения",
+  ELEMENTS_TABLE: "Таблица элементов",
+  ADDEDITELEMENT: "",
+  FORBIDDEN: "Нет доступа",
+  NOT_FOUND: "Не найдено"
+ };

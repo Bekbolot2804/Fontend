@@ -1,11 +1,11 @@
-:root {
-  /*font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;*/
-  /*line-height: 1.5;*/
-  /*font-weight: 400;*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+#root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  width: 100%;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #085aff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -23,12 +23,15 @@ a:hover {
 }
 
 body {
-  /*padding-top: 60px;*/
   margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  color: #002E52; 
   display: flex;
-  place-items: normal;
+  align-items: flex-start;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
+  width: 100%;
 }
 
 h1 {
@@ -43,7 +46,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #0004ff;
+  background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -53,13 +56,6 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
-.home-background {
-  background-image: url('/src/assets/images/background.jpg'); /* путь начиная от src */
-  background-size: cover;
-  background-position: center;
-  min-height: 100vh;
-  padding-top: 4rem;
 }
 
 @media (prefers-color-scheme: light) {
@@ -73,4 +69,24 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face {
+  font-family: inherit;
+  src: url('./assets/fonts/oswald.ttf') format('truetype');
+  font-weight: normal !important;
+  font-style: normal;
+}
+/* OswaldGeorgia */
+@font-face {
+  font-family: inherit;
+  src: url('./assets/fonts/georgia.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.customButton {
+  font-family: inherit, sans-serif !important;
+  font-size: 1.15rem !important;
+  letter-spacing: 0.015rem !important;
 }

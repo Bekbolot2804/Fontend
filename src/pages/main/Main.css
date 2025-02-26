@@ -1,0 +1,26 @@
+.cont {
+  height: 100vh;
+  width: 100vw;
+  background-image: url('/background-large.png');
+  /* background-color: black; */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  color: black;
+  margin: 0;
+  padding: 0;
+}
+@media (max-width: 630px) {
+  .cont {
+    background-image: url('/background_min.png'); 
+  }
+}
+.mainTitle {
+  font-family: inherit, sans-serif;
+}
+
+.mainText {
+  font-family: inherit, sans-serif;
+  font-size: 1.1rem;
+}

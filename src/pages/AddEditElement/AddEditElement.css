@@ -1,0 +1,45 @@
+.editDescription {
+    height: 300px;
+}
+
+.editFormLabel {
+    font-family: inherit, sans-serif;
+    font-size: 1.2rem;
+}
+
+.editFormInput {
+    font-family: inherit, sans-serif;
+}
+
+.editSubmitButton {
+    font-family: inherit, sans-serif;
+    font-size: 1.2rem;
+}
+
+.editStatus {
+    font-family: inherit, sans-serif;
+    font-size: 1.1rem;
+}
+
+.editImg {
+    width: 200px;
+}
+
+.editFileInput {
+    font-family: inherit, sans-serif;
+    font-size: 1.1rem;
+}
+
+.elementAddEditAttributes {
+    font-family: inherit, sans-serif;
+    font-size: 16px;
+}
+
+.elementAddEditAttributesButton {
+    font-family: inherit, sans-serif;
+}
+
+.elementAttributeNameValue {
+    font-family: inherit, sans-serif;
+    margin-right: 5px;
+}

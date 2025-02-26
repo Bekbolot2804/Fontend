@@ -1,0 +1,19 @@
+.navbarImg {
+    margin-right: 5px;
+}
+
+.navBar {
+    font-family: inherit, sans-serif;
+    letter-spacing: 0.02rem;
+}
+
+.navLink {
+    font-size: 1.1rem;
+}
+
+.loginLogoutButtons {
+    font-size: 1.1rem;
+    color: white !important;
+    border: 1px solid white!important;
+    border-radius: 0%;
+}
