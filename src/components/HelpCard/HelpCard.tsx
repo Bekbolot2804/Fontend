@@ -15,9 +15,7 @@ interface helpProps {
   description: string,
   status: string,
   img_url: string,
-  period_time_text: string,
-  period_time: number,
-  atomic_mass: number
+  duration: number
 }
 
 export const HelpCard: FC<helpProps> = ({ help_id, name, img_url }) => {
@@ -34,7 +32,7 @@ export const HelpCard: FC<helpProps> = ({ help_id, name, img_url }) => {
       <Card.Body>
         <Card.Title className='cardTitle'>{name}</Card.Title>
         {isAuthenticated && (<Button className='w-100 customButton' variant="dark" onClick={handleAdd}>Добавить</Button>)}
-        <Link to={`${ROUTES.ELEMENTS}/${help_id}`}>
+        <Link to={`${ROUTES.HELPS}/${help_id}`}>
           <Button className='w-100 customButton' variant="primary" style={{ ...(isAuthenticated && {marginTop: "5px"})}}>Подробнее</Button>
         </Link>
       </Card.Body>

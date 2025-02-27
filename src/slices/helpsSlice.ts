@@ -11,29 +11,27 @@ interface HelpInf {
     description: string,
     status: string,
     img_url: string,
-    period_time_text: string,
-    period_time: number,
-    atomic_mass: number
+    duration: number
 }
 
 interface helpsState {
     helps: HelpInf[],
-    atomic_mass: string,
+    search_name: string,
     loading: boolean,
 }
 
 const initialState: helpsState = {
     helps: [],
-    atomic_mass: '',
+    search_name: '',
     loading: false,
 }
 
 export const getHelpsWithSearch = createAsyncThunk(
     'helps/getHelpsWithSearch',
-    async (atomicMass:string, { dispatch, rejectWithValue }) => {
+    async (searchName:string, { dispatch, rejectWithValue }) => {
         try {
             const response = await api.helps.helpsList({
-                duration: atomicMass!
+                name: searchName!
             })
             dispatch(setLesionInfAction(response.data.lesion_information))
             return response.data
@@ -61,8 +59,8 @@ const helpsSlice = createSlice ({
     name: 'helps',
     initialState,
     reducers: {
-        setAtomicMass(state, {payload}) {
-            state.atomic_mass = payload
+        setName(state, {payload}) {
+            state.search_name = payload
         }
     },
     extraReducers: (builder) => {
@@ -74,18 +72,18 @@ const helpsSlice = createSlice ({
             state.loading = false;
         }),
         builder.addCase(getHelpsWithSearch.rejected, (state) => {
-            state.helps = mockHelps.helps.filter((el) => el.atomic_mass.toString().includes(state.atomic_mass.toString()))
+            state.helps = mockHelps.helps.filter((el) => el.duration.toString().includes(state.search_name.toString()))
             state.loading = false;
         })
     }
 })
 
-export const useAtomicMass = () => useSelector((state: RootState) => state.helps.atomic_mass)
+export const useSearchName = () => useSelector((state: RootState) => state.helps.search_name)
 export const useHelpsLoading = () => useSelector((state: RootState) => state.helps.loading)
 export const useHelps = () => useSelector((state: RootState) => state.helps.helps)
 
 export const {
-    setAtomicMass: setAtomicMassAction
+    setName: setNameAction
 } = helpsSlice.actions
 
 export default helpsSlice.reducer

@@ -13,13 +13,12 @@ interface helpForLesion {
 interface helpLesion {
   id?: number;
   help?: helpForLesion;
-  quantity?: string | null;
-  remaining_quantity?: string | null;
-  decay?: number;
+  comment?: string | null;
+  lesion?: number;
 }
 
-interface decay {
-  decay_id?: number;
+interface lesion {
+  lesion_id?: number;
   helps?: helpLesion[];
   creator?: string;
   moderator?: string;
@@ -27,24 +26,24 @@ interface decay {
   date_of_creation?: string;
   date_of_formation?: string | null;
   date_of_finish?: string | null;
-  pass_time?: string | null;
+  sum_duration?: number | null;
 }
 
-interface decayState {
-    decay: decay,
+interface lesionState {
+    lesion: lesion,
     loading: boolean
 }
 
-const initialState: decayState = {
-    decay: {pass_time: ""},
+const initialState: lesionState = {
+    lesion: {},
     loading: false
 }
 
 export const getLesionInformation = createAsyncThunk(
-    'decay/getLesionInformation',
-    async (decayId: string, { rejectWithValue }) => {
+    'lesion/getLesionInformation',
+    async (lesionId: string, { rejectWithValue }) => {
       try {
-        const response = await api.decay.decayRead(decayId)
+        const response = await api.lesion.lesionRead(lesionId)
         return response.data
       } catch (error: any) {
         return rejectWithValue("Произошла ошибка")
@@ -53,11 +52,11 @@ export const getLesionInformation = createAsyncThunk(
 )
 
 export const deleteHelpFromLesion = createAsyncThunk(
-    'decay/deleteHelpFromLesion',
-    async (credentials: {decayId: number, helpId: number}, { dispatch,rejectWithValue }) => {
+    'lesion/deleteHelpFromLesion',
+    async (credentials: {lesionId: number, helpId: number}, { dispatch,rejectWithValue }) => {
         try {
-            const response = await api.helpLesion.helpLesionDelete(credentials.helpId.toString(), credentials.decayId.toString())
-            dispatch(deleteHelpFromLesionAction({helpId: credentials.helpId, decayId: credentials.decayId}))
+            const response = await api.helpLesion.helpLesionDelete(credentials.helpId.toString(), credentials.lesionId.toString())
+            dispatch(deleteHelpFromLesionAction({helpId: credentials.helpId, lesionId: credentials.lesionId}))
             return response.data
         } catch (error: any) {
           return rejectWithValue("Произошла ошибка")
@@ -65,23 +64,11 @@ export const deleteHelpFromLesion = createAsyncThunk(
     }
 )
 
-export const savePassTime = createAsyncThunk(
-    'decay/savePassTime',
-    async (credentials: {decayId: number, passTime: string}, { rejectWithValue }) => {
-        try {
-            const response = await api.decay.decayUpdate(credentials.decayId.toString(), {pass_time: credentials.passTime})
-            return response.data
-        } catch (error: any) {
-          return rejectWithValue("Произошла ошибка")
-        }
-    }
-)
-
-export const saveQuantity = createAsyncThunk(
-  'decay/saveQuantity',
-  async (credentials: {decayId: number, helpId: number, quantity: string}, { rejectWithValue }) => {
+export const saveComment = createAsyncThunk(
+  'lesion/comment?: string | null;',
+  async (credentials: {lesionId: number, helpId: number, comment: string}, { rejectWithValue }) => {
       try {
-          const response = await api.helpLesion.helpLesionUpdate(credentials.helpId.toString(), credentials.decayId.toString(), {quantity: credentials.quantity})
+          const response = await api.helpLesion.helpLesionUpdate(credentials.helpId.toString(), credentials.lesionId.toString(), {comment: credentials.comment})
           return response.data
       } catch (error: any) {
         return rejectWithValue("Произошла ошибка")
@@ -90,10 +77,10 @@ export const saveQuantity = createAsyncThunk(
 )
 
 export const deleteLesion = createAsyncThunk(
-  'decay/deleteLesion',
-  async (decayId: number, { rejectWithValue }) => {
+  'lesion/deleteLesion',
+  async (lesionId: number, { rejectWithValue }) => {
       try {
-          const response = await api.decay.decayFormingDelete(decayId.toString())
+          const response = await api.lesion.lesionFormingDelete(lesionId.toString())
           return response.data
       } catch (error: any) {
         return rejectWithValue("Произошла ошибка")
@@ -102,10 +89,10 @@ export const deleteLesion = createAsyncThunk(
 )
 
 export const formLesion = createAsyncThunk(
-  'decay/formLesion',
-  async (decayId: number, { rejectWithValue }) => {
+  'lesion/formLesion',
+  async (lesionId: number, { rejectWithValue }) => {
       try {
-          const response = await api.decay.decayFormingUpdate(decayId.toString())
+          const response = await api.lesion.lesionFormingUpdate(lesionId.toString())
           return response.data
       } catch (error: any) {
           return rejectWithValue("Произошла ошибка")
@@ -113,19 +100,16 @@ export const formLesion = createAsyncThunk(
   }
 )
 
-const decaySlice = createSlice({
-    name: 'decay',
+const lesionSlice = createSlice({
+    name: 'lesion',
     initialState,
     reducers: {
-      setLesionPassTime(state, {payload}) {
-        state.decay.pass_time = payload
-      },
-      setLesionHelpQuantity(state, {payload}) {
-        const help = state.decay.helps?.find((el) => el.help?.help_id === payload.help_id)
-        help!.quantity = payload.quantity
+      setLesionHelpComment(state, {payload}) {
+        const help = state.lesion.helps?.find((el) => el.help?.help_id === payload.help_id)
+        help!.comment = payload.quantity
       },
       deleteHelpFromLesion(state, {payload}) {
-        state.decay.helps = state.decay.helps?.filter((el) => el.help?.help_id !== payload.helpId)
+        state.lesion.helps = state.lesion.helps?.filter((el) => el.help?.help_id !== payload.helpId)
       }
     },
     extraReducers: (builder) => {
@@ -133,7 +117,7 @@ const decaySlice = createSlice({
           state.loading = true
         }),
         builder.addCase(getLesionInformation.fulfilled, (state, {payload}) => {
-          state.decay = payload
+          state.lesion = payload
           state.loading = false
         }),
         builder.addCase(getLesionInformation.rejected, (state) => {
@@ -142,15 +126,14 @@ const decaySlice = createSlice({
     }
 })
 
-export const useLesion = () => useSelector((state: RootState) => state.decay.decay)
-export const useLesionHelps = () => useSelector((state: RootState) => state.decay.decay.helps)
-export const useLesionLoading = () => useSelector((state: RootState) => state.decay.loading)
-export const useLesionStatus = () => useSelector((state: RootState) => state.decay.decay.status)
+export const useLesion = () => useSelector((state: RootState) => state.lesion.lesion)
+export const useLesionHelps = () => useSelector((state: RootState) => state.lesion.lesion.helps)
+export const useLesionLoading = () => useSelector((state: RootState) => state.lesion.loading)
+export const useLesionStatus = () => useSelector((state: RootState) => state.lesion.lesion.status)
 
 export const {
-  setLesionPassTime: setLesionPassTimeAction,
-  setLesionHelpQuantity: setLesionHelpQuantityAction,
+  setLesionHelpComment: setLesionHelpQuantityAction,
   deleteHelpFromLesion: deleteHelpFromLesionAction
-} = decaySlice.actions
+} = lesionSlice.actions
 
-export default decaySlice.reducer
+export default lesionSlice.reducer

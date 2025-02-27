@@ -26,14 +26,14 @@ const App: FC = () => {
       <NavigationBar />
       <Routes>
         <Route path={ROUTES.MAIN} index element={<MainPage />} />
-        <Route path={ROUTES.ELEMENTS} index element={<HelpsPage />} />
-        <Route path={`${ROUTES.ELEMENTS}/:helpId`} element={<HelpPage />} />
+        <Route path={ROUTES.HELPS} index element={<HelpsPage />} />
+        <Route path={`${ROUTES.HELPS}/:helpId`} element={<HelpPage />} />
         <Route path={ROUTES.LOGIN} index element={<LoginPage />} />
         <Route path={ROUTES.REGISTRATION} index element={<RegistrationPage />} />
         <Route path={ROUTES.ACCOUNT} index element={<AccountPage />} />
-        <Route path={ROUTES.DECAYS} index element={<LesionsPage/>}/>
-        <Route path={`${ROUTES.DECAYS}/:decayId`} index element={<LesionPage />} />
-        <Route path={ROUTES.ELEMENTS_TABLE} index element={<HelpsTablePage />} />
+        <Route path={ROUTES.LESIONS} index element={<LesionsPage/>}/>
+        <Route path={`${ROUTES.LESIONS}/:lesionId`} index element={<LesionPage />} />
+        <Route path={ROUTES.HELPS_TABLE} index element={<HelpsTablePage />} />
         <Route path={`${ROUTES.ADDEDITELEMENT}/:helpId?`} index element={<AddEditHelpPage />} />
         <Route path={ROUTES.FORBIDDEN} index element={<ForbiddenPage />} />
         <Route path='*' index element={<NotFoundPage />} />

@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { api } from "../api/index";
 
-interface decayInf {
-    decay_id: number,
-    decay_helps_count: number
+interface lesionInf {
+    lesion_id: number,
+    lesion_helps_count: number
 }
 
 interface userState {
@@ -13,7 +13,7 @@ interface userState {
     isAuthenticated: boolean;
     isModerator: boolean;
     loading: boolean, 
-    decayInf: decayInf
+    lesionInf: lesionInf
 }
 
 const initialState: userState = {
@@ -21,9 +21,9 @@ const initialState: userState = {
     isAuthenticated: false,
     isModerator: false,
     loading: false,
-    decayInf: {
-        decay_id: 0,
-        decay_helps_count: 0
+    lesionInf: {
+        lesion_id: 0,
+        lesion_helps_count: 0
     }
 }
 
@@ -80,10 +80,10 @@ const userSlice = createSlice ({
     initialState,
     reducers: {
         setLesionInf(state, {payload}) {
-            state.decayInf = payload
+            state.lesionInf = payload
         },
         setLesionCountZero(state) {
-            state.decayInf.decay_helps_count = 0
+            state.lesionInf.lesion_helps_count = 0
         }
     },
     extraReducers: (builder) => {
@@ -140,7 +140,7 @@ export const useEmail = () => useSelector((state: RootState) => state.user.email
 export const useIsAuthenticated = () => useSelector((state: RootState) => state.user.isAuthenticated)
 export const useIsModerator = () => useSelector((state: RootState) => state.user.isModerator)
 export const useUserLoading = () => useSelector((state: RootState) => state.user.loading)
-export const useLesionInf = () => useSelector((state: RootState) => state.user.decayInf)
+export const useLesionInf = () => useSelector((state: RootState) => state.user.lesionInf)
 
 export const {
     setLesionInf: setLesionInfAction,

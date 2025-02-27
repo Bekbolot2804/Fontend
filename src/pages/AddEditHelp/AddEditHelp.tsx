@@ -3,7 +3,7 @@ import { Button, Col, Container, Dropdown, Form, Image, Row, Spinner, Table } fr
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../Routes";
 import { useNavigate, useParams } from "react-router-dom";
-import { editHelp, getHelpWithId, saveHelpImage, setHelpAtomicMassAction, setHelpDescriptionAction, setHelpInitialStateAction, setHelpNameAction, setHelpPeriodTimeAction, setHelpPeriodTimeTextAction, setHelpStatusAction, useHelp, useHelpLoading, createHelp, setHelpAttributeValueAction, editHelpAttribute, deleteHelpAttribute, useHelpAttributeName, useHelpAttributeValue, setHelpAttributeAddNameAction, addHelpAttribute, setHelpAttributeAddValueAction } from "../../slices/helpSlice";
+import { editHelp, getHelpWithId, saveHelpImage, setHelpAtomicMassAction, setHelpDescriptionAction, setHelpInitialStateAction, setHelpNameAction, setHelpStatusAction, useHelp, useHelpLoading, createHelp, setHelpAttributeValueAction, editHelpAttribute, deleteHelpAttribute, useHelpAttributeName, useHelpAttributeValue, setHelpAttributeAddNameAction, addHelpAttribute, setHelpAttributeAddValueAction } from "../../slices/helpSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import defaultImg from '/default.jpg'
@@ -41,8 +41,8 @@ const AddEditHelpPage: FC = () => {
 
     const statusFormat = (status: string) => {
         const statusMap: Record<string, string> = {
-            "active": "Активный",
-            "deleted": "Удаленный",
+            "1": "Активный",
+            "0": "Удаленный",
         };
     
         return statusMap[status]
@@ -58,7 +58,7 @@ const AddEditHelpPage: FC = () => {
         } else {
             dispatch(createHelp())
         }
-        navigate(ROUTES.ELEMENTS_TABLE)
+        navigate(ROUTES.HELPS_TABLE)
     }
 
     const handleUpload = (e: React.ChangeEvent<any>) => {
@@ -87,11 +87,11 @@ const AddEditHelpPage: FC = () => {
     return (
         <Container className="w-100 rootContainer">
             {helpId ? (
-                <BreadCrumbs crumbs={[{path: ROUTES.ELEMENTS, label: ROUTE_LABELS.ELEMENTS}, 
-                                      {path: ROUTES.ELEMENTS_TABLE, label: ROUTE_LABELS.ELEMENTS_TABLE}, 
+                <BreadCrumbs crumbs={[{path: ROUTES.HELPS, label: ROUTE_LABELS.HELPS}, 
+                                      {path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, 
                                       {label: 'Редактирование элемента'}]}/>
             ) : (
-                <BreadCrumbs crumbs={[{path: ROUTES.ELEMENTS_TABLE, label: ROUTE_LABELS.ELEMENTS_TABLE}, {label: 'Создание элемента'}]}/>
+                <BreadCrumbs crumbs={[{path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, {label: 'Создание элемента'}]}/>
             )}
             {loading ? (
                 <div  className='d-flex justify-content-center align-items-center'>
@@ -118,7 +118,7 @@ const AddEditHelpPage: FC = () => {
                                       className="w-100 editFormInput border-dark"
                                       required/>
                         <Form.Label className="editFormLabel mt-3">Атомная масса:</Form.Label>
-                        <Form.Control value={help.atomic_mass}
+                        <Form.Control value={help.duration}
                                       onChange={(e) => dispatch(setHelpAtomicMassAction(e.target.value))}
                                       className="w-100 editFormInput border-dark"
                                       required/>

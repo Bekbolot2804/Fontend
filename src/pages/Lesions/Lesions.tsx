@@ -74,7 +74,7 @@ const LesionsPage: FC = () => {
     }
 
     const handleOpen = (decayId: number) => {
-        navigate(`${ROUTES.DECAYS}/${decayId}`)
+        navigate(`${ROUTES.LESIONS}/${decayId}`)
     }
 
     return (
@@ -85,7 +85,7 @@ const LesionsPage: FC = () => {
                 </Row>
             ) : (
                 <>
-                <BreadCrumbs crumbs={[{label: ROUTE_LABELS.DECAYS}]}/>
+                <BreadCrumbs crumbs={[{label: ROUTE_LABELS.LESIONS}]}/>
                 <div className={isModerator ? "d-flex flex-column flex-md-row justify-content-center filtersText" 
                                             : "d-flex flex-column flex-md-row justify-content-center filtersText pb-3"}>
                     <div className="d-flex flex-row justify-content-center">
@@ -146,11 +146,11 @@ const LesionsPage: FC = () => {
                     </thead>
                     <tbody>
                     {decays.filter((el) => el.creator?.toLowerCase().includes(email.toLowerCase()))
-                           .sort((a, b) => b.decay_id! - a.decay_id!)
+                           .sort((a, b) => b.lesion_id! - a.lesion_id!)
                            .map((item, index) => {
                         return (
                             <tr key={index}>
-                                <td>{item.decay_id}</td>
+                                <td>{item.lesion_id}</td>
                                 <td>{item.date_of_creation}</td>
                                 <td>{item.date_of_formation}</td>
                                 <td>{item.date_of_finish}</td>
@@ -183,13 +183,13 @@ const LesionsPage: FC = () => {
                                         <Dropdown>
                                             <Dropdown.Toggle variant="dark">Действие</Dropdown.Toggle>
                                             <Dropdown.Menu id="dropdownMenu">
-                                                <Dropdown.Item id="openAction" onClick={() => handleOpen(item.decay_id!)}>Открыть</Dropdown.Item>
-                                                <Dropdown.Item id="finishAction" onClick={() => handleFinish(item.decay_id!)}>Завершить</Dropdown.Item>
-                                                <Dropdown.Item id="rejectAction" onClick={() => handleReject(item.decay_id!)}>Отклонить</Dropdown.Item>
+                                                <Dropdown.Item id="openAction" onClick={() => handleOpen(item.lesion_id!)}>Открыть</Dropdown.Item>
+                                                <Dropdown.Item id="finishAction" onClick={() => handleFinish(item.lesion_id!)}>Завершить</Dropdown.Item>
+                                                <Dropdown.Item id="rejectAction" onClick={() => handleReject(item.lesion_id!)}>Отклонить</Dropdown.Item>
                                             </Dropdown.Menu>
                                         </Dropdown>
                                     ) : (
-                                        <Link to={`${ROUTES.DECAYS}/${item.decay_id}`}>
+                                        <Link to={`${ROUTES.LESIONS}/${item.lesion_id}`}>
                                             <Button variant="dark" className="">Открыть</Button>
                                         </Link>
                                     )}

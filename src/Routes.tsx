@@ -1,11 +1,11 @@
 export const ROUTES = {
   MAIN: "/",
-  ELEMENTS: "/helps",
+  HELPS: "/helps",
   LOGIN: "/login",
   REGISTRATION: "/registration",
   ACCOUNT: "/account",
-  DECAYS: "/decays",
-  ELEMENTS_TABLE: "/helps_table",
+  LESIONS: "/lesions",
+  HELPS_TABLE: "/helps_table",
   ADDEDITELEMENT: '/helps_table/add_edit_help',
   FORBIDDEN: '/403',
   NOT_FOUND: '/404'
@@ -13,12 +13,12 @@ export const ROUTES = {
 export type RouteKeyType = keyof typeof ROUTES;
 export const ROUTE_LABELS: {[key in RouteKeyType]: string} = {
   MAIN: "Главная",
-  ELEMENTS: "Виды первой помощи",
+  HELPS: "Виды первой помощи",
   LOGIN: "Вход",
   REGISTRATION: "Регистрация",
   ACCOUNT: "Личный кабинет",
-  DECAYS: "Поражения",
-  ELEMENTS_TABLE: "Таблица элементов",
+  LESIONS: "Поражения",
+  HELPS_TABLE: "Таблица видов",
   ADDEDITELEMENT: "",
   FORBIDDEN: "Нет доступа",
   NOT_FOUND: "Не найдено"
