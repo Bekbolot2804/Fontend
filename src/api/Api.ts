@@ -19,7 +19,7 @@ export interface HelpForLesion {
    */
   name: string;
   /** Status */
-  status?: "1" | "0";
+  status?: "active" | "deleted";
   /**
    * Img url
    * @maxLength 100
@@ -32,10 +32,15 @@ export interface HelpLesion {
   id?: number;
   help?: HelpForLesion;
   /**
-   * Comment
-   * @maxLength 100
+   * Quantity
+   * @maxLength 30
    */
-  comment?: string | null;
+  quantity?: string | null;
+  /**
+   * Remaining quantity
+   * @minLength 1
+   */
+  remaining_quantity?: string | null;
   /** Lesion */
   lesion?: number;
 }
@@ -79,7 +84,7 @@ export interface Help {
    */
   description: string;
   /** Status */
-  status: "1" | "0";
+  status: "active" | "deleted";
   /**
    * Img url
    * @maxLength 100
@@ -119,11 +124,10 @@ export interface Lesion {
    */
   date_of_finish?: string | null;
   /**
-   * Sum duration
-   * @min -2147483648
-   * @max 2147483647
+   * Pass time
+   * @maxLength 30
    */
-  sum_duration?: number | null;
+  pass_time?: string | null;
   /**
    * Qr
    * @minLength 1
@@ -331,7 +335,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       helpId: string,
       lesionId: string,
       data: {
-        comment?: string;
+        quantity?: string;
       },
       params: RequestParams = {},
     ) =>
@@ -480,14 +484,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      */
     helpsList: (
       query?: {
-        /** Имя */
-        name?: string;
+        /** Время */
+        duration?: string;
       },
       params: RequestParams = {},
     ) =>
       this.request<
         {
-          name: string;
+          duration: string;
           helps: {
             help_id: number;
             name: string;

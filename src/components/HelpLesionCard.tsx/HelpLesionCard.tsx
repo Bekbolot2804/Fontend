@@ -13,41 +13,42 @@ interface help {
     img_url?: string | null;
   }
 
-interface lesionHelp {
+interface decayHelp {
     id?: number;
     help?: help;
-    comment?: string | null;
-    lesion?: number;
+    quantity?: string | null;
+    remaining_quantity?: string | null;
+    decay?: number;
 }
 
-export const HelpLesionCard: FC<lesionHelp> = (lesionHelp) => {
+export const HelpLesionCard: FC<decayHelp> = (decayHelp) => {
     const dispatch = useDispatch<AppDispatch>()
     const status = useLesionStatus()
     const handleDelete = async () => {
-        await dispatch(deleteHelpFromLesion({helpId: lesionHelp.help?.help_id!, lesionId: lesionHelp.lesion!}))
+        await dispatch(deleteHelpFromLesion({helpId: decayHelp.help?.help_id!, decayId: decayHelp.decay!}))
     }
 
     return (
         <Card border='dark'>
             <Card.Body className='d-flex flex-column flex-md-row'>
-                <Card.Img variant="top" src={lesionHelp.help!.img_url || defaultImg} className='helpLesionImg pe-md-3 mx-auto mx-md-0'/>
+                <Card.Img variant="top" src={decayHelp.help!.img_url || defaultImg} className='helpLesionImg pe-md-3 mx-auto mx-md-0'/>
                 <div className='d-flex flex-column w-100 justify-content-between'>
-                    <Card.Title className='lesionCardTitle pt-2 pt-md-0 mx-auto mx-md-0'>{lesionHelp.help?.name}</Card.Title>
+                    <Card.Title className='decayCardTitle pt-2 pt-md-0 mx-auto mx-md-0'>{decayHelp.help?.name}</Card.Title>
                     <InputGroup>
                         <div className='d-flex flex-column flex-md-row w-100 align-items-start'>
-                            <Form.Label className="lesionText formLabel mx-auto mx-md-0 my-0 my-md-auto">Комментарий:</Form.Label>
-                            <Form.Control className="lesionText border-dark"
-                                        value={lesionHelp.comment!}
-                                        onChange={(e) => dispatch(setLesionHelpQuantityAction({ help_id: lesionHelp.help?.help_id, quantity: e.target.value}))}
+                            <Form.Label className="decayText formLabel mx-auto mx-md-0 my-0 my-md-auto">Количество:</Form.Label>
+                            <Form.Control className="decayText border-dark"
+                                        value={decayHelp.quantity!}
+                                        onChange={(e) => dispatch(setLesionHelpQuantityAction({ help_id: decayHelp.help?.help_id, quantity: e.target.value}))}
                                         required
-                                        placeholder="Введите комментарий"
+                                        placeholder="Введите количество"
                                         {...status !== "draft" ? {readOnly: true} : {}}/>
                         </div>
                     </InputGroup>
                     {status === "draft" ? (
                         <Button className='customButton mt-3 mt-md-0' variant='outline-danger' onClick={handleDelete}>Удалить</Button>
                     ) : (
-                        <Form.Label className='lesionText formLabel mt-3 mt-md-0'></Form.Label>
+                        <Form.Label className='decayText formLabel mt-3 mt-md-0'>Оставшееся количество вещества: {decayHelp.remaining_quantity}</Form.Label>
                     )}
                 </div>
             </Card.Body>

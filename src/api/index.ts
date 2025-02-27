@@ -6,9 +6,7 @@ export const api = new Api({
     baseURL: 'http://localhost:3000/api',
 });
 
-
 export const setupInterceptors = (navigate: NavigateFunction) => {
-    /*
     api.instance.interceptors.response.use(
         (response) => (response),
         (error) => {
@@ -20,5 +18,4 @@ export const setupInterceptors = (navigate: NavigateFunction) => {
             return Promise.reject(error)
         }
     )
-    */
 }

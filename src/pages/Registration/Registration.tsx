@@ -30,7 +30,7 @@ const RegistrationPage: FC = () => {
             return
         }
         await dispatch(userRegistration({email: email, password: password1}))
-        navigate(ROUTES.HELPS)
+        navigate(ROUTES.ELEMENTS)
     }
 
     return (

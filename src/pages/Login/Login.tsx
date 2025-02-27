@@ -29,7 +29,7 @@ const LoginPage: FC = () => {
             setLoginFailed(true)
             return
         }
-        navigate(ROUTES.HELPS)
+        navigate(ROUTES.ELEMENTS)
     }
 
     return (

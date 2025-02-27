@@ -1,6 +1,6 @@
 import { Container, Nav, Navbar, Image, Button } from 'react-bootstrap';
 import { ROUTES } from '../../Routes';
-import logo from '/logo.png'
+import radioactive_logo from '/logo.png'
 import { FC } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -8,7 +8,7 @@ import './NavigationBar.css'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { useEmail, useIsAuthenticated, useIsModerator, userLogout } from '../../slices/userSlice';
-import { setNameAction } from '../../slices/helpsSlice';
+import { setAtomicMassAction } from '../../slices/helpsSlice';
 import { resetFiltersAction } from '../../slices/lesionsSlice';
 
 const NavigationBar: FC = () => {
@@ -20,7 +20,7 @@ const NavigationBar: FC = () => {
 
   const handleLogout = () => {
     dispatch(userLogout())
-    dispatch(setNameAction(''))
+    dispatch(setAtomicMassAction(''))
     dispatch(resetFiltersAction())
   }
 
@@ -28,23 +28,23 @@ const NavigationBar: FC = () => {
     <Navbar fixed="top" bg="primary" expand="lg" variant='dark' className='navBar'>
       <Container>
         <Link to={ROUTES.MAIN} className="navbar-brand navbar-text-white">
-            <Image src={logo} width={30} className='navbarImg'/>
+            <Image src={radioactive_logo} width={30} className='navbarImg'/>
             Главная
         </Link>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <NavLink to={ROUTES.HELPS} className="nav-link navbar-text-white navLink">
+            <NavLink to={ROUTES.ELEMENTS} className="nav-link navbar-text-white navLink">
               Виды первой помощи
             </NavLink>
             {isAuthenticated && (
-              <NavLink to={ROUTES.LESIONS} className="nav-link navbar-text-white navLink">
+              <NavLink to={ROUTES.DECAYS} className="nav-link navbar-text-white navLink">
                 Поражения
               </NavLink>
             )}
             {isModerator && (
-              <NavLink to={ROUTES.HELPS_TABLE} className="nav-link navbar-text-white navLink">
-                Таблица видов
+              <NavLink to={ROUTES.ELEMENTS_TABLE} className="nav-link navbar-text-white navLink">
+                Таблица элементов
               </NavLink>
             )}
           </Nav>

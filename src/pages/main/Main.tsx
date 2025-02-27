@@ -13,7 +13,7 @@ const MainPage: FC = () => {
         <Col xs={12} md = {10} className = "align-items-center justify-content-center text-center">
           <h1 className="mainTitle">Справочник по медицине катастроф и первой помощи</h1>
           <p className="mainText">Добро пожаловать! С помощью данного сервиса вы можете ознакомиться как нужно поступать при определенных поражениях.</p>
-          <Link to={ROUTES.HELPS}>
+          <Link to={ROUTES.ELEMENTS}>
             <Button className="customButton" variant="dark">Виды первой помощи</Button>
           </Link>
         </Col>

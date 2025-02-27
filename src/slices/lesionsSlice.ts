@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { format, parseISO } from "date-fns";
 
-interface lesion {
-    lesion_id?: number;
+interface decay {
+    decay_id?: number;
     creator?: string;
     moderator?: string;
     status?: string;
@@ -15,8 +15,8 @@ interface lesion {
     qr?: string | null;
 }
 
-interface lesionsState {
-    lesions: lesion[],
+interface decaysState {
+    decays: decay[],
     start_date: string,
     end_date: string,
     status: string,
@@ -24,8 +24,8 @@ interface lesionsState {
     loading: boolean
 }
 
-const initialState: lesionsState = {
-    lesions: [],
+const initialState: decaysState = {
+    decays: [],
     start_date: "",
     end_date: "",
     status: "",
@@ -48,10 +48,10 @@ const statusFormat = (status: string) => {
 };
 
 export const getLesions = createAsyncThunk(
-    'lesions/getLesions',
+    'decays/getLesions',
     async (credentials: {start_date?: string, end_date?: string, status?: string}, { rejectWithValue }) => {
         try {
-            const response = await api.lesions.lesionsList({start_date: credentials?.start_date, 
+            const response = await api.decays.decaysList({start_date: credentials?.start_date, 
                                                           end_date: credentials.end_date ? `${credentials?.end_date} 23:59` : undefined, 
                                                           status: credentials?.status})
             return response.data
@@ -62,10 +62,10 @@ export const getLesions = createAsyncThunk(
 )
 
 export const moderateLesion = createAsyncThunk(
-    'lesions/moderateLesion',
-    async (lesionId: number, {rejectWithValue}) => {
+    'decays/moderateLesion',
+    async (decayId: number, {rejectWithValue}) => {
         try {
-            const response = await api.lesion.lesionModerateUpdate(lesionId.toString(), {accept: 'true'})
+            const response = await api.decay.decayModerateUpdate(decayId.toString(), {accept: 'true'})
             return response.data
         } catch (error: any) {
             return rejectWithValue("Произошла ошибка")
@@ -74,10 +74,10 @@ export const moderateLesion = createAsyncThunk(
 )
 
 export const rejectLesion = createAsyncThunk(
-  'lesions/rejectLesion',
-  async (lesionId: number, {rejectWithValue}) => {
+  'decays/rejectLesion',
+  async (decayId: number, {rejectWithValue}) => {
       try {
-          const response = await api.lesion.lesionModerateUpdate(lesionId.toString(), {accept: 'false'})
+          const response = await api.decay.decayModerateUpdate(decayId.toString(), {accept: 'false'})
           return response.data
       } catch (error: any) {
           return rejectWithValue("Произошла ошибка")
@@ -85,8 +85,8 @@ export const rejectLesion = createAsyncThunk(
   }
 )
 
-const lesionsSlice = createSlice({
-    name: 'lesions',
+const decaysSlice = createSlice({
+    name: 'decays',
     initialState,
     reducers: {
         setFilterStartDate(state, {payload}) {
@@ -113,8 +113,8 @@ const lesionsSlice = createSlice({
             state.loading = true
         }),
         builder.addCase(getLesions.fulfilled, (state, {payload}) => {
-            state.lesions = payload
-            state.lesions.forEach((item, index) => {
+            state.decays = payload
+            state.decays.forEach((item, index) => {
                 if (item.date_of_creation) {
                     item.date_of_creation = dateFormat(item.date_of_creation!)
                 }
@@ -135,7 +135,7 @@ const lesionsSlice = createSlice({
             state.loading = true
         }),
         builder.addCase(moderateLesion.fulfilled, (state, {payload}) => {
-            const help = state.lesions.find((el) => el.lesion_id === payload.lesion_id)
+            const help = state.decays.find((el) => el.decay_id === payload.decay_id)
             help!.status = statusFormat(payload.status!)
             help!.date_of_finish = dateFormat(payload.date_of_finish!)
             help!.moderator = payload.moderator
@@ -148,7 +148,7 @@ const lesionsSlice = createSlice({
             state.loading = true
         }),
         builder.addCase(rejectLesion.fulfilled, (state, {payload}) => {
-            const help = state.lesions.find((el) => el.lesion_id === payload.lesion_id)
+            const help = state.decays.find((el) => el.decay_id === payload.decay_id)
             help!.status = statusFormat(payload.status!)
             help!.date_of_finish = dateFormat(payload.date_of_finish!)
             help!.moderator = payload.moderator
@@ -160,12 +160,12 @@ const lesionsSlice = createSlice({
     }
 })
 
-export const useLesions = () => useSelector((state: RootState) => state.lesions.lesions)
-export const useStartDate = () => useSelector((state: RootState) => state.lesions.start_date)
-export const useEndDate = () => useSelector((state: RootState) => state.lesions.end_date)
-export const useStatus = () => useSelector((state: RootState) => state.lesions.status)
-export const useLesionsLoading = () => useSelector((state: RootState) => state.lesions.loading)
-export const useLesionsEmail = () => useSelector((state: RootState) => state.lesions.email)
+export const useLesions = () => useSelector((state: RootState) => state.decays.decays)
+export const useStartDate = () => useSelector((state: RootState) => state.decays.start_date)
+export const useEndDate = () => useSelector((state: RootState) => state.decays.end_date)
+export const useStatus = () => useSelector((state: RootState) => state.decays.status)
+export const useLesionsLoading = () => useSelector((state: RootState) => state.decays.loading)
+export const useLesionsEmail = () => useSelector((state: RootState) => state.decays.email)
 
 export const {
     setFilterStartDate: setFilterStartDateAction,
@@ -173,6 +173,6 @@ export const {
     setFilterStatus: setFilterStatusAction,
     resetFilters: resetFiltersAction,
     setLesionsEmail: setLesionsEmailAction
-} = lesionsSlice.actions
+} = decaysSlice.actions
 
-export default lesionsSlice.reducer
+export default decaysSlice.reducer

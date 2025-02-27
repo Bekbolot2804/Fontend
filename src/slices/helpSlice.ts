@@ -10,9 +10,11 @@ interface helpState {
         help_id?: number,
         name: string,
         description: string,
-        status: "1" | "0",
+        status: "active" | "deleted",
         img_url?: string | null,
-        duration: number,
+        period_time_text: string,
+        period_time: number,
+        atomic_mass: number,
         attributes?: {attribute?: {
             attribute_id?: number,
             name?: string
@@ -30,9 +32,11 @@ const initialState: helpState = {
         help_id: 0,
         name: '',
         description: '',
-        status: '0',
+        status: 'deleted',
         img_url: '',
-        duration: 0
+        period_time_text: '',
+        period_time: 0,
+        atomic_mass: 0
     },
     loading: false
 }
@@ -57,7 +61,7 @@ export const editHelp = createAsyncThunk(
     async (helpId: string, {getState, rejectWithValue}) => {
         const state = getState() as RootState
         try {
-            const response = await api.helps.helpsUpdate(helpId, state.help.help!)
+            const response = await api.helps.helpsUpdate(helpId, state.help.help)
             return response.data
         } catch (error: any) {
             return rejectWithValue("Произошла ошибка")
@@ -178,8 +182,14 @@ const helpSlice = createSlice({
         setHelpStatus(state, {payload}) {
             state.help.status = payload
         },
+        setHelpPeriodTimeText(state, {payload}) {
+            state.help.period_time_text = payload
+        },
+        setHelpPeriodTime(state, {payload}) {
+            state.help.period_time = payload
+        },
         setHelpAtomicMass(state, {payload}) {
-            state.help.duration = payload
+            state.help.atomic_mass = payload
         },
         setHelpAttributeValue(state, {payload}) {
             const attribute = state.help.attributes?.find((el) => el.attribute?.attribute_id === payload.attribute_id)
@@ -233,6 +243,8 @@ export const {
     setHelpName: setHelpNameAction,
     setHelpDescription: setHelpDescriptionAction,
     setHelpStatus: setHelpStatusAction,
+    setHelpPeriodTimeText: setHelpPeriodTimeTextAction,
+    setHelpPeriodTime: setHelpPeriodTimeAction,
     setHelpAtomicMass: setHelpAtomicMassAction,
     setHelpAttributeValue: setHelpAttributeValueAction,
     setHelpAttributeAddName: setHelpAttributeAddNameAction,
