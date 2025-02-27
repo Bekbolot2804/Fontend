@@ -6,23 +6,23 @@ import { ROUTE_LABELS, ROUTES } from '../../Routes';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import InputField from '../../components/InputField/InputField';
 import { useDispatch } from 'react-redux';
-import { setAtomicMassAction, useAtomicMass, useHelps, useHelpsLoading } from '../../slices/helpsSlice';
+import { setNameAction, useSearchName, useHelps, useHelpsLoading } from '../../slices/helpsSlice';
 import { getHelpsWithSearch } from '../../slices/helpsSlice';
 import { AppDispatch } from '../../store';
 import { useLesionInf, useIsAuthenticated } from '../../slices/userSlice';
-import decayLogo from '/icon-192x192.png';
+import lesionLogo from '/icon-192x192.png';
 import { Link } from 'react-router-dom';
 
 const HelpsPage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const atomicMass = useAtomicMass()
+    const searchName = useSearchName()
     const helps = useHelps()
     const loading = useHelpsLoading()
     const isAuthenticated = useIsAuthenticated()
-    const decayInf = useLesionInf()
+    const lesionInf = useLesionInf()
 
     const handleSearch = () => {
-        dispatch(getHelpsWithSearch(atomicMass))
+        dispatch(getHelpsWithSearch(searchName))
     }
 
     useEffect(() => {
@@ -35,13 +35,13 @@ const HelpsPage: FC = () => {
 
     return (
         <Container className='w-100 rootContainer'>
-            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.ELEMENTS}]}/>
+            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.HELPS}]}/>
             <Row>
                 <Col md={12}>
                     <div className='inputField'>
                         <InputField
-                            value={atomicMass}
-                            setValue={(value: string) => dispatch(setAtomicMassAction(value))}
+                            value={searchName}
+                            setValue={(value: string) => dispatch(setNameAction(value))}
                             placeholder='Введите название первой помощи'
                             buttonText='Найти'
                             onSubmit={handleSearch}
@@ -56,7 +56,7 @@ const HelpsPage: FC = () => {
                 </Row>
             ): (
                 <Row className="g-4">
-                    {helps.filter(item => item.status === 'active').map((item, index)=> (
+                    {helps.filter(item => item.status === '1').map((item, index)=> (
                         <Col lg = {3} md={4} xs={6} key={index}>
                             <HelpCard {...item}/>
                         </Col>
@@ -64,15 +64,15 @@ const HelpsPage: FC = () => {
                 </Row>
             )}
 
-            {decayInf.decay_id && decayInf.decay_helps_count && isAuthenticated ? (
+            {lesionInf.lesion_id && lesionInf.lesion_helps_count && isAuthenticated ? (
                 <>
-                    <Link to={`${ROUTES.DECAYS}/${decayInf.decay_id}`}>
-                        <img src={decayLogo} className='draftLesionLogo'/>
-                        <span className='draftLesionLogoCount d-flex justify-content-center align-items-center'>{decayInf.decay_helps_count}</span>
+                    <Link to={`${ROUTES.LESIONS}/${lesionInf.lesion_id}`}>
+                        <img src={lesionLogo} className='draftLesionLogo'/>
+                        <span className='draftLesionLogoCount d-flex justify-content-center align-items-center'>{lesionInf.lesion_helps_count}</span>
                     </Link>
                 </>
             ) : (
-                <img src={decayLogo} className='draftLesionLogo blackNWhiteLogo'/>
+                <img src={lesionLogo} className='draftLesionLogo blackNWhiteLogo'/>
             )}
             
         </Container>

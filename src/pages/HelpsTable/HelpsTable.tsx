@@ -32,8 +32,8 @@ const HelpsTablePage: FC = () => {
 
     const statusFormat = (status: string) => {
         const statusMap: Record<string, string> = {
-            "active": "Активный",
-            "deleted": "Удаленный",
+            "1": "Активный",
+            "0": "Удаленный",
         };
     
         return statusMap[status]
@@ -52,7 +52,7 @@ const HelpsTablePage: FC = () => {
                 </Row>
             ) : (
                 <>
-                <BreadCrumbs crumbs={[{path: ROUTES.ELEMENTS, label: ROUTE_LABELS.ELEMENTS}, {label: ROUTE_LABELS.ELEMENTS_TABLE}]}/>
+                <BreadCrumbs crumbs={[{path: ROUTES.HELPS, label: ROUTE_LABELS.HELPS}, {label: ROUTE_LABELS.HELPS_TABLE}]}/>
                 <Link to={ROUTES.ADDEDITELEMENT}>
                     <Button variant="outline-dark" className="createHelpButton">Создать</Button>
                 </Link>
@@ -80,7 +80,7 @@ const HelpsTablePage: FC = () => {
                                             <Button variant="warning">Редактировать</Button>
                                         </Link>
                                     </td>
-                                    {item.status === 'active' ? (
+                                    {item.status === '1' ? (
                                         <td><Button variant="danger" onClick={() => handleDelete(item.help_id.toString())}>Удалить</Button></td>
                                     ): (
                                         <td></td>

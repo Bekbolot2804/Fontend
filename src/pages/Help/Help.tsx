@@ -26,7 +26,7 @@ const HelpPage: FC = () => {
 
     return (
         <Container className='w-100 rootContainer'>
-            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.ELEMENTS, path: ROUTES.ELEMENTS}, {label: helpContent?.name}]}/>
+            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.HELPS, path: ROUTES.HELPS}, {label: helpContent?.name}]}/>
 
             {loading ? (
                 <div  className='d-flex justify-content-center align-items-center'>

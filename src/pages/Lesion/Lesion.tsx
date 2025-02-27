@@ -2,7 +2,7 @@ import { FC, FormEvent, useEffect } from "react";
 import { Container, Form, Row, InputGroup, Button, Spinner } from "react-bootstrap";
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTES, ROUTE_LABELS } from "../../Routes";
-import { useLesion, setLesionPassTimeAction, getLesionInformation, useLesionLoading, deleteLesion, saveQuantity, savePassTime, formLesion, useLesionStatus } from "../../slices/lesionSlice";
+import { useLesion,  getLesionInformation, useLesionLoading, deleteLesion, saveComment, formLesion, useLesionStatus } from "../../slices/lesionSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import './Lesion.css'
@@ -13,15 +13,15 @@ import { useIsAuthenticated } from "../../slices/userSlice";
 const LesionPage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const isAuthenticated = useIsAuthenticated()
-    const decay = useLesion()
+    const lesion = useLesion()
     const loading = useLesionLoading()
-    const { decayId } = useParams()
+    const { lesionId } = useParams()
     const navigate = useNavigate()
     const status = useLesionStatus()
+
     const saveFields = () => {
-        dispatch(savePassTime({decayId: decay.decay_id!, passTime: decay.pass_time!}))
-        decay.helps?.forEach((item, index) => {
-            dispatch(saveQuantity({helpId: item.help?.help_id!, decayId: item.decay!, quantity: item.quantity!}))
+        lesion.helps?.forEach((item, index) => {
+            dispatch(saveComment({helpId: item.help?.help_id!, lesionId: item.lesion!, comment: item.comment!}))
         })
     }
 
@@ -29,16 +29,16 @@ const LesionPage: FC = () => {
         event.preventDefault()
         saveFields()
         setTimeout(() => {
-            dispatch(formLesion(decay.decay_id!))
+            dispatch(formLesion(lesion.lesion_id!))
         }, 500)
         setTimeout(() => {
-            navigate(ROUTES.ELEMENTS)
+            navigate(ROUTES.HELPS)
         }, 500)
     }
 
     const handleDelete = async () => {
-        await dispatch(deleteLesion(decay.decay_id!))
-        navigate(ROUTES.ELEMENTS)
+        await dispatch(deleteLesion(lesion.lesion_id!))
+        navigate(ROUTES.HELPS)
     }
 
     const handleSave = () => {
@@ -49,7 +49,7 @@ const LesionPage: FC = () => {
         if (!isAuthenticated) {
             navigate(ROUTES.FORBIDDEN)
         }
-        dispatch(getLesionInformation(decayId!))
+        dispatch(getLesionInformation(lesionId!))
     }, [])
     
     useEffect(() => {
@@ -66,31 +66,22 @@ const LesionPage: FC = () => {
                 </Row>
             ) : (
             <>
-            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.DECAYS, path: ROUTES.DECAYS}, {label: `Распад №${decayId}`}]}/>
+            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.LESIONS, path: ROUTES.LESIONS}, {label: `Поражение №${lesionId}`}]}/>
             
             <Form onSubmit={handleSubmit}>
                 <div className="w-100 d-flex justify-content-center pb-3">
-                    <div className="w-75 d-flex">
-                        <div className="w-100 inGroup">
-                            <InputGroup>
-                                <Form.Label className="decayText my-auto formLabel">Прошло времени:</Form.Label>
-                                <Form.Control className="decayText border-dark"
-                                            value={decay.pass_time!}
-                                            onChange={(e) => dispatch(setLesionPassTimeAction(e.target.value))}
-                                            required
-                                            placeholder="Введите время"
-                                            {...status !== "draft" ? {readOnly: true} : {}}/>
-                            </InputGroup>
-                        </div>
                         {status === "draft" ? (
                             <div className="">
                                 <Button variant="outline-success" className="customButton" onClick={handleSave}>Сохранить</Button>
                             </div>
-                        ) : (<></>)}
-                    </div>
+                        ) : (
+                            <div>
+                                <Form.Label className='lesionText formLabel'>Требуемое время: {lesion.sum_duration}</Form.Label>
+                            </div>
+                        )}
                 </div>
 
-                {decay.helps && decay.helps!.map((item, index)=> (
+                {lesion.helps && lesion.helps!.map((item, index)=> (
                                         <div className="w-100 d-flex align-items justify-content-center">
                                             <div className="pb-3 w-75" >
                                                 <HelpLesionCard {...item}/>
@@ -100,13 +91,13 @@ const LesionPage: FC = () => {
 
                 {status === "draft" ? (
                     <div className="d-flex flex-row justify-content-center gap-3">
-                        { decay.helps!.length ? (
+                        { lesion.helps!.length ? (
                             <>
-                                <Button type="submit" variant="dark" className="customButton">Сформировать</Button>
+                                <Button type="submit" variant="primary" className="customButton">Сформировать</Button>
                                 <Button variant="danger" className="customButton" onClick={handleDelete}>Удалить</Button>
                             </>
                         ) : (
-                            <h1 className="decayH1">В распаде нет элементов</h1>
+                            <h1 className="lesionH1">В распаде нет элементов</h1>
                         )}
                     </div>
                 ) : (<></>)}
