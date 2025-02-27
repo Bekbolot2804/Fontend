@@ -9,33 +9,9 @@
  * ---------------------------------------------------------------
  */
 
-export interface Attribute {
-  /** Attribute id */
-  attribute_id?: number;
-  /**
-   * Name
-   * @minLength 1
-   * @maxLength 30
-   */
-  name: string;
-}
-
-export interface AttributeElement {
-  attribute?: Attribute;
-  /**
-   * Value
-   * @maxLength 30
-   */
-  value?: string | null;
-}
-
-export interface ElementForAttributes {
-  attributes?: AttributeElement[];
-}
-
-export interface ElementForDecay {
-  /** Element id */
-  element_id?: number;
+export interface HelpForLesion {
+  /** Help id */
+  help_id?: number;
   /**
    * Name
    * @minLength 1
@@ -51,10 +27,10 @@ export interface ElementForDecay {
   img_url?: string | null;
 }
 
-export interface ElementDecay {
+export interface HelpLesion {
   /** ID */
   id?: number;
-  element?: ElementForDecay;
+  help?: HelpForLesion;
   /**
    * Quantity
    * @maxLength 30
@@ -65,14 +41,67 @@ export interface ElementDecay {
    * @minLength 1
    */
   remaining_quantity?: string | null;
-  /** Decay */
-  decay?: number;
+  /** Lesion */
+  lesion?: number;
 }
 
-export interface Decay {
-  /** Decay id */
-  decay_id?: number;
-  elements?: ElementDecay[];
+export interface Attribute {
+  /** Attribute id */
+  attribute_id?: number;
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 30
+   */
+  name: string;
+}
+
+export interface AttributeHelp {
+  attribute?: Attribute;
+  /**
+   * Value
+   * @maxLength 70
+   */
+  value?: string | null;
+}
+
+export interface HelpForAttributes {
+  attributes?: AttributeHelp[];
+}
+
+export interface Help {
+  /** Help id */
+  help_id?: number;
+  /**
+   * Name
+   * @minLength 1
+   * @maxLength 30
+   */
+  name: string;
+  /**
+   * Description
+   * @minLength 1
+   */
+  description: string;
+  /** Status */
+  status: "active" | "deleted";
+  /**
+   * Img url
+   * @maxLength 100
+   */
+  img_url?: string | null;
+  /**
+   * Duration
+   * @min -2147483648
+   * @max 2147483647
+   */
+  duration: number;
+}
+
+export interface Lesion {
+  /** Lesion id */
+  lesion_id?: number;
+  helps?: HelpLesion[];
   /** Creator */
   creator?: string;
   /** Moderator */
@@ -104,43 +133,6 @@ export interface Decay {
    * @minLength 1
    */
   qr?: string | null;
-}
-
-export interface Element {
-  /** Element id */
-  element_id?: number;
-  /**
-   * Name
-   * @minLength 1
-   * @maxLength 30
-   */
-  name: string;
-  /**
-   * Description
-   * @minLength 1
-   */
-  description: string;
-  /** Status */
-  status: "active" | "deleted";
-  /**
-   * Img url
-   * @maxLength 100
-   */
-  img_url?: string | null;
-  /**
-   * Period time text
-   * @minLength 1
-   * @maxLength 100
-   */
-  period_time_text: string;
-  /** Period time */
-  period_time: number;
-  /**
-   * Atomic mass
-   * @min -2147483648
-   * @max 2147483647
-   */
-  atomic_mass: number;
 }
 
 export interface CustomUser {
@@ -320,7 +312,7 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title Radioactive Elements API
+ * @title Radioactive helps API
  * @version v1
  * @license BSD License
  * @termsOfService https://www.google.com/policies/terms/
@@ -330,18 +322,72 @@ export class HttpClient<SecurityDataType = unknown> {
  * My description
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  helpLesion = {
+    /**
+     * No description
+     *
+     * @tags Help_lesion
+     * @name HelpLesionUpdate
+     * @request PUT:/Help_lesion/{help_id}/{lesion_id}/
+     * @secure
+     */
+    helpLesionUpdate: (
+      helpId: string,
+      lesionId: string,
+      data: {
+        quantity?: string;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        HelpLesion[],
+        {
+          details: string;
+        }
+      >({
+        path: `/Help_lesion/${helpId}/${lesionId}/`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Help_lesion
+     * @name HelpLesionDelete
+     * @request DELETE:/Help_lesion/{help_id}/{lesion_id}/
+     * @secure
+     */
+    helpLesionDelete: (helpId: string, lesionId: string, params: RequestParams = {}) =>
+      this.request<
+        HelpLesion[],
+        {
+          details: string;
+        }
+      >({
+        path: `/Help_lesion/${helpId}/${lesionId}/`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   attribute = {
     /**
      * No description
      *
      * @tags attribute
      * @name AttributeRead
-     * @request GET:/attribute/{element_id}/
+     * @request GET:/attribute/{help_id}/
      * @secure
      */
-    attributeRead: (elementId: string, params: RequestParams = {}) =>
-      this.request<ElementForAttributes, any>({
-        path: `/attribute/${elementId}/`,
+    attributeRead: (helpId: string, params: RequestParams = {}) =>
+      this.request<HelpForAttributes, any>({
+        path: `/attribute/${helpId}/`,
         method: "GET",
         secure: true,
         format: "json",
@@ -353,19 +399,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags attribute
      * @name AttributeCreate
-     * @request POST:/attribute/{element_id}/
+     * @request POST:/attribute/{help_id}/
      * @secure
      */
     attributeCreate: (
-      elementId: string,
+      helpId: string,
       data: {
         name: string;
         value?: string;
       },
       params: RequestParams = {},
     ) =>
-      this.request<AttributeElement, any>({
-        path: `/attribute/${elementId}/`,
+      this.request<AttributeHelp, any>({
+        path: `/attribute/${helpId}/`,
         method: "POST",
         body: data,
         secure: true,
@@ -379,11 +425,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags attribute
      * @name AttributeUpdate
-     * @request PUT:/attribute/{element_id}/{attribute_id}/
+     * @request PUT:/attribute/{help_id}/{attribute_id}/
      * @secure
      */
     attributeUpdate: (
-      elementId: string,
+      helpId: string,
       attributeId: string,
       data: {
         value?: string;
@@ -396,7 +442,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         },
         any
       >({
-        path: `/attribute/${elementId}/${attributeId}/`,
+        path: `/attribute/${helpId}/${attributeId}/`,
         method: "PUT",
         body: data,
         secure: true,
@@ -410,40 +456,104 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags attribute
      * @name AttributeDelete
-     * @request DELETE:/attribute/{element_id}/{attribute_id}/
+     * @request DELETE:/attribute/{help_id}/{attribute_id}/
      * @secure
      */
-    attributeDelete: (elementId: string, attributeId: string, params: RequestParams = {}) =>
+    attributeDelete: (helpId: string, attributeId: string, params: RequestParams = {}) =>
       this.request<
         {
           id?: number;
         },
         any
       >({
-        path: `/attribute/${elementId}/${attributeId}/`,
+        path: `/attribute/${helpId}/${attributeId}/`,
         method: "DELETE",
         secure: true,
         format: "json",
         ...params,
       }),
   };
-  decay = {
+  helps = {
     /**
      * No description
      *
-     * @tags decay
-     * @name DecayRead
-     * @request GET:/decay/{decay_id}/
+     * @tags helps
+     * @name HelpsList
+     * @request GET:/helps/
      * @secure
      */
-    decayRead: (decayId: string, params: RequestParams = {}) =>
+    helpsList: (
+      query?: {
+        /** Время */
+        duration?: string;
+      },
+      params: RequestParams = {},
+    ) =>
       this.request<
-        Decay,
+        {
+          duration: string;
+          helps: {
+            help_id: number;
+            name: string;
+            description: string;
+            status: string;
+            img_url: string;
+            duration: number;
+          }[];
+          lesion_information: {
+            lesion_helps_count: number;
+            lesion_id: number;
+          };
+        },
+        any
+      >({
+        path: `/helps/`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags helps
+     * @name HelpsCreate
+     * @request POST:/helps/
+     * @secure
+     */
+    helpsCreate: (data: Help, params: RequestParams = {}) =>
+      this.request<
+        Help,
         {
           details: string;
         }
       >({
-        path: `/decay/${decayId}/`,
+        path: `/helps/`,
+        method: "POST",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags helps
+     * @name HelpsRead
+     * @request GET:/helps/{help_id}/
+     * @secure
+     */
+    helpsRead: (helpId: string, params: RequestParams = {}) =>
+      this.request<
+        Help,
+        {
+          details: string;
+        }
+      >({
+        path: `/helps/${helpId}/`,
         method: "GET",
         secure: true,
         format: "json",
@@ -453,13 +563,141 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags decay
-     * @name DecayUpdate
-     * @request PUT:/decay/{decay_id}/
+     * @tags helps
+     * @name HelpsCreate2
+     * @request POST:/helps/{help_id}/
+     * @originalName helpsCreate
+     * @duplicate
      * @secure
      */
-    decayUpdate: (
-      decayId: string,
+    helpsCreate2: (helpId: string, params: RequestParams = {}) =>
+      this.request<
+        {
+          lesion_information?: {
+            lesion_id?: number;
+            lesion_helps_count?: number;
+          };
+        },
+        {
+          details: string;
+        }
+      >({
+        path: `/helps/${helpId}/`,
+        method: "POST",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags helps
+     * @name HelpsUpdate
+     * @request PUT:/helps/{help_id}/
+     * @secure
+     */
+    helpsUpdate: (helpId: string, data: Help, params: RequestParams = {}) =>
+      this.request<
+        Help,
+        {
+          details: string;
+        }
+      >({
+        path: `/helps/${helpId}/`,
+        method: "PUT",
+        body: data,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags helps
+     * @name HelpsDelete
+     * @request DELETE:/helps/{help_id}/
+     * @secure
+     */
+    helpsDelete: (helpId: string, params: RequestParams = {}) =>
+      this.request<
+        Help,
+        {
+          details: string;
+        }
+      >({
+        path: `/helps/${helpId}/`,
+        method: "DELETE",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags helps
+     * @name HelpsAddImgCreate
+     * @request POST:/helps/{help_id}/add_img/
+     * @secure
+     */
+    helpsAddImgCreate: (
+      helpId: string,
+      data: {
+        /** @format binary */
+        img: File;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        Help,
+        {
+          details: string;
+        }
+      >({
+        path: `/helps/${helpId}/add_img/`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.FormData,
+        format: "json",
+        ...params,
+      }),
+  };
+  lesion = {
+    /**
+     * No description
+     *
+     * @tags lesion
+     * @name LesionRead
+     * @request GET:/lesion/{lesion_id}/
+     * @secure
+     */
+    lesionRead: (lesionId: string, params: RequestParams = {}) =>
+      this.request<
+        Lesion,
+        {
+          details: string;
+        }
+      >({
+        path: `/lesion/${lesionId}/`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags lesion
+     * @name LesionUpdate
+     * @request PUT:/lesion/{lesion_id}/
+     * @secure
+     */
+    lesionUpdate: (
+      lesionId: string,
       data: {
         pass_time?: string;
       },
@@ -473,7 +711,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
           details: string;
         }
       >({
-        path: `/decay/${decayId}/`,
+        path: `/lesion/${lesionId}/`,
         method: "PUT",
         body: data,
         secure: true,
@@ -485,19 +723,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags decay
-     * @name DecayFormingUpdate
-     * @request PUT:/decay/{decay_id}/forming/
+     * @tags lesion
+     * @name LesionFormingUpdate
+     * @request PUT:/lesion/{lesion_id}/forming/
      * @secure
      */
-    decayFormingUpdate: (decayId: string, params: RequestParams = {}) =>
+    lesionFormingUpdate: (lesionId: string, params: RequestParams = {}) =>
       this.request<
-        Decay,
+        Lesion,
         {
           details: string;
         }
       >({
-        path: `/decay/${decayId}/forming/`,
+        path: `/lesion/${lesionId}/forming/`,
         method: "PUT",
         secure: true,
         format: "json",
@@ -507,19 +745,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags decay
-     * @name DecayFormingDelete
-     * @request DELETE:/decay/{decay_id}/forming/
+     * @tags lesion
+     * @name LesionFormingDelete
+     * @request DELETE:/lesion/{lesion_id}/forming/
      * @secure
      */
-    decayFormingDelete: (decayId: string, params: RequestParams = {}) =>
+    lesionFormingDelete: (lesionId: string, params: RequestParams = {}) =>
       this.request<
-        Decay,
+        Lesion,
         {
           details: string;
         }
       >({
-        path: `/decay/${decayId}/forming/`,
+        path: `/lesion/${lesionId}/forming/`,
         method: "DELETE",
         secure: true,
         format: "json",
@@ -529,25 +767,25 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     /**
      * No description
      *
-     * @tags decay
-     * @name DecayModerateUpdate
-     * @request PUT:/decay/{decay_id}/moderate/
+     * @tags lesion
+     * @name LesionModerateUpdate
+     * @request PUT:/lesion/{lesion_id}/moderate/
      * @secure
      */
-    decayModerateUpdate: (
-      decayId: string,
+    lesionModerateUpdate: (
+      lesionId: string,
       data: {
         accept: string;
       },
       params: RequestParams = {},
     ) =>
       this.request<
-        Decay,
+        Lesion,
         {
           details: string;
         }
       >({
-        path: `/decay/${decayId}/moderate/`,
+        path: `/lesion/${lesionId}/moderate/`,
         method: "PUT",
         body: data,
         secure: true,
@@ -556,16 +794,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  decays = {
+  lesions = {
     /**
      * No description
      *
-     * @tags decays
-     * @name DecaysList
-     * @request GET:/decays/
+     * @tags lesions
+     * @name LesionsList
+     * @request GET:/lesions/
      * @secure
      */
-    decaysList: (
+    lesionsList: (
       query?: {
         /** Начальная дата */
         start_date?: string;
@@ -577,263 +815,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       params: RequestParams = {},
     ) =>
       this.request<
-        Decay[],
+        Lesion[],
         {
           details: string;
         }
       >({
-        path: `/decays/`,
+        path: `/lesions/`,
         method: "GET",
         query: query,
         secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  elementDecay = {
-    /**
-     * No description
-     *
-     * @tags element_decay
-     * @name ElementDecayUpdate
-     * @request PUT:/element_decay/{element_id}/{decay_id}/
-     * @secure
-     */
-    elementDecayUpdate: (
-      elementId: string,
-      decayId: string,
-      data: {
-        quantity?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        ElementDecay[],
-        {
-          details: string;
-        }
-      >({
-        path: `/element_decay/${elementId}/${decayId}/`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags element_decay
-     * @name ElementDecayDelete
-     * @request DELETE:/element_decay/{element_id}/{decay_id}/
-     * @secure
-     */
-    elementDecayDelete: (elementId: string, decayId: string, params: RequestParams = {}) =>
-      this.request<
-        ElementDecay[],
-        {
-          details: string;
-        }
-      >({
-        path: `/element_decay/${elementId}/${decayId}/`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-  };
-  elements = {
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsList
-     * @request GET:/elements/
-     * @secure
-     */
-    elementsList: (
-      query?: {
-        /** Атомная масса */
-        atomic_mass?: string;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        {
-          atomic_mass: string;
-          elements: {
-            element_id: number;
-            name: string;
-            description: string;
-            status: string;
-            img_url: string;
-            period_time_text: string;
-            period_time: number;
-            atomic_mass: number;
-          }[];
-          decay_information: {
-            decay_elements_count: number;
-            decay_id: number;
-          };
-        },
-        any
-      >({
-        path: `/elements/`,
-        method: "GET",
-        query: query,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsCreate
-     * @request POST:/elements/
-     * @secure
-     */
-    elementsCreate: (data: Element, params: RequestParams = {}) =>
-      this.request<
-        Element,
-        {
-          details: string;
-        }
-      >({
-        path: `/elements/`,
-        method: "POST",
-        body: data,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsRead
-     * @request GET:/elements/{element_id}/
-     * @secure
-     */
-    elementsRead: (elementId: string, params: RequestParams = {}) =>
-      this.request<
-        Element,
-        {
-          details: string;
-        }
-      >({
-        path: `/elements/${elementId}/`,
-        method: "GET",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsCreate2
-     * @request POST:/elements/{element_id}/
-     * @originalName elementsCreate
-     * @duplicate
-     * @secure
-     */
-    elementsCreate2: (elementId: string, params: RequestParams = {}) =>
-      this.request<
-        {
-          decay_information?: {
-            decay_id?: number;
-            decay_elements_count?: number;
-          };
-        },
-        {
-          details: string;
-        }
-      >({
-        path: `/elements/${elementId}/`,
-        method: "POST",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsUpdate
-     * @request PUT:/elements/{element_id}/
-     * @secure
-     */
-    elementsUpdate: (elementId: string, data: Element, params: RequestParams = {}) =>
-      this.request<
-        Element,
-        {
-          details: string;
-        }
-      >({
-        path: `/elements/${elementId}/`,
-        method: "PUT",
-        body: data,
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsDelete
-     * @request DELETE:/elements/{element_id}/
-     * @secure
-     */
-    elementsDelete: (elementId: string, params: RequestParams = {}) =>
-      this.request<
-        Element,
-        {
-          details: string;
-        }
-      >({
-        path: `/elements/${elementId}/`,
-        method: "DELETE",
-        secure: true,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags elements
-     * @name ElementsAddImgCreate
-     * @request POST:/elements/{element_id}/add_img/
-     * @secure
-     */
-    elementsAddImgCreate: (
-      elementId: string,
-      data: {
-        /** @format binary */
-        img: File;
-      },
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        Element,
-        {
-          details: string;
-        }
-      >({
-        path: `/elements/${elementId}/add_img/`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.FormData,
         format: "json",
         ...params,
       }),

@@ -6,7 +6,7 @@ import mockElements from "../modules/Mock";
 import { setDecayInfAction } from "./userSlice";
 
 interface ElementInf {
-    element_id: number,
+    help_id: number,
     name: string,
     description: string,
     status: string,
@@ -16,40 +16,40 @@ interface ElementInf {
     atomic_mass: number
 }
 
-interface elementsState {
-    elements: ElementInf[],
+interface helpsState {
+    helps: ElementInf[],
     atomic_mass: string,
     loading: boolean,
 }
 
-const initialState: elementsState = {
-    elements: [],
+const initialState: helpsState = {
+    helps: [],
     atomic_mass: '',
     loading: false,
 }
 
 export const getElementsWithSearch = createAsyncThunk(
-    'elements/getElementsWithSearch',
+    'helps/getElementsWithSearch',
     async (atomicMass:string, { dispatch, rejectWithValue }) => {
         try {
-            const response = await api.elements.elementsList({
-                atomic_mass: atomicMass!
+            const response = await api.helps.helpsList({
+                duration: atomicMass!
             })
-            dispatch(setDecayInfAction(response.data.decay_information))
+            dispatch(setDecayInfAction(response.data.lesion_information))
             return response.data
         }catch (error: any){
-            dispatch(setDecayInfAction(mockElements.decay_information))
+            dispatch(setDecayInfAction(mockElements.lesion_information))
             return rejectWithValue('Ошибка при загрузке данных');
         }
     }
 )
 
 export const addElementToDecay = createAsyncThunk(
-    'element/addElementToDecay',
-    async (elementId: string, { dispatch, rejectWithValue }) => {
+    'help/addElementToDecay',
+    async (helpId: string, { dispatch, rejectWithValue }) => {
         try {
-            const response = await api.elements.elementsCreate2(elementId)
-            dispatch(setDecayInfAction(response.data.decay_information))
+            const response = await api.helps.helpsCreate2(helpId)
+            dispatch(setDecayInfAction(response.data.lesion_information))
             return response.data
         } catch (error: any) {
             return rejectWithValue("Произошла ошибка")
@@ -57,8 +57,8 @@ export const addElementToDecay = createAsyncThunk(
     }
 )
 
-const elementsSlice = createSlice ({
-    name: 'elements',
+const helpsSlice = createSlice ({
+    name: 'helps',
     initialState,
     reducers: {
         setAtomicMass(state, {payload}) {
@@ -70,22 +70,22 @@ const elementsSlice = createSlice ({
             state.loading = true
         }),
         builder.addCase(getElementsWithSearch.fulfilled, (state, {payload}) => {
-            state.elements = payload.elements;
+            state.helps = payload.helps;
             state.loading = false;
         }),
         builder.addCase(getElementsWithSearch.rejected, (state) => {
-            state.elements = mockElements.elements.filter((el) => el.atomic_mass.toString().includes(state.atomic_mass.toString()))
+            state.helps = mockElements.helps.filter((el) => el.atomic_mass.toString().includes(state.atomic_mass.toString()))
             state.loading = false;
         })
     }
 })
 
-export const useAtomicMass = () => useSelector((state: RootState) => state.elements.atomic_mass)
-export const useElementsLoading = () => useSelector((state: RootState) => state.elements.loading)
-export const useElements = () => useSelector((state: RootState) => state.elements.elements)
+export const useAtomicMass = () => useSelector((state: RootState) => state.helps.atomic_mass)
+export const useElementsLoading = () => useSelector((state: RootState) => state.helps.loading)
+export const useElements = () => useSelector((state: RootState) => state.helps.helps)
 
 export const {
     setAtomicMass: setAtomicMassAction
-} = elementsSlice.actions
+} = helpsSlice.actions
 
-export default elementsSlice.reducer
+export default helpsSlice.reducer
