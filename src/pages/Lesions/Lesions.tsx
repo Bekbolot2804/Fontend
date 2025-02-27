@@ -1,34 +1,34 @@
 import { FC, useEffect, useState } from "react"
 import { Button, Container, Form, Row, Spinner, Table, Dropdown } from "react-bootstrap"
-import { getDecays, resetFiltersAction, setFilterEndDateAction, setFilterStartDateAction, 
-         setFilterStatusAction, useDecays, useEndDate, useStartDate, useStatus, useDecaysEmail, 
-         setDecaysEmailAction } from "../../slices/decaysSlice"
+import { getLesions, resetFiltersAction, setFilterEndDateAction, setFilterStartDateAction, 
+         setFilterStatusAction, useLesions, useEndDate, useStartDate, useStatus, useLesionsEmail, 
+         setLesionsEmailAction } from "../../slices/lesionsSlice"
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs"
 import { ROUTES, ROUTE_LABELS } from "../../Routes"
 import { useDispatch } from "react-redux"
 import { AppDispatch } from "../../store"
 import { Link, useNavigate } from "react-router-dom"
-import "./Decays.css"
+import "./Lesions.css"
 import { useIsAuthenticated, useIsModerator } from "../../slices/userSlice"
-import { moderateDecay, rejectDecay } from "../../slices/decaysSlice"
+import { moderateLesion, rejectLesion } from "../../slices/lesionsSlice"
 import time from '/time.svg'
 import reject from '/reject.svg'
 import href from '/href.svg'
 
-const DecaysPage: FC = () => {
+const LesionsPage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const isAuthenticated = useIsAuthenticated()
-    const decays = useDecays()
+    const decays = useLesions()
     const startDate = useStartDate()
     const endDate = useEndDate()
     const status = useStatus()
-    const email = useDecaysEmail()
+    const email = useLesionsEmail()
     const isModerator = useIsModerator()
     const navigate = useNavigate()
     const [firstLoading, setFirstLoading] = useState(true)
 
     useEffect(() => {
-        fetchDecays().then(() => {setFirstLoading(false)})
+        fetchLesions().then(() => {setFirstLoading(false)})
     }, [])
 
     useEffect(() => {
@@ -38,13 +38,13 @@ const DecaysPage: FC = () => {
     }, [isAuthenticated])
 
     useEffect(() => {
-        fetchDecays()
-        const id = setInterval(fetchDecays, 1000)
+        fetchLesions()
+        const id = setInterval(fetchLesions, 1000)
         return () => clearInterval(id)
     }, [isModerator, status, startDate, endDate])
 
-    const fetchDecays = async () => {
-        await dispatch(getDecays({status: statusFormat(status), start_date: startDate, end_date: endDate}))
+    const fetchLesions = async () => {
+        await dispatch(getLesions({status: statusFormat(status), start_date: startDate, end_date: endDate}))
     }
 
     const handleSelect = (eventKey: string | null) => {
@@ -66,11 +66,11 @@ const DecaysPage: FC = () => {
     };
 
     const handleFinish = (decayId: number) => {
-        dispatch(moderateDecay(decayId))
+        dispatch(moderateLesion(decayId))
     }
 
     const handleReject = (decayId: number) => {
-        dispatch(rejectDecay(decayId))
+        dispatch(rejectLesion(decayId))
     }
 
     const handleOpen = (decayId: number) => {
@@ -122,7 +122,7 @@ const DecaysPage: FC = () => {
                         <Form.Label className="filtersText my-auto filtersEmailLabel">Создатель:</Form.Label>
                         <Form.Control className="filtersEmail border-dark"
                                         value={email}
-                                        onChange={(e) => dispatch(setDecaysEmailAction(e.target.value))}/>
+                                        onChange={(e) => dispatch(setLesionsEmailAction(e.target.value))}/>
                     </div>
                 )}
                 <div className="w-100" style={{overflowX: 'auto'}}>
@@ -205,4 +205,4 @@ const DecaysPage: FC = () => {
         </Container>
     )
 }
-export default DecaysPage
+export default LesionsPage

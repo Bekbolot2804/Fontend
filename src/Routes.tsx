@@ -5,8 +5,8 @@ export const ROUTES = {
   REGISTRATION: "/registration",
   ACCOUNT: "/account",
   DECAYS: "/decays",
-  ELEMENTS_TABLE: "/elements_table",
-  ADDEDITELEMENT: '/elements_table/add_edit_element',
+  ELEMENTS_TABLE: "/helps_table",
+  ADDEDITELEMENT: '/helps_table/add_edit_help',
   FORBIDDEN: '/403',
   NOT_FOUND: '/404'
   };

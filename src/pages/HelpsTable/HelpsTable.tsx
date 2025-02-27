@@ -4,24 +4,24 @@ import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../Routes";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
-import { getElementsWithSearch, useElements, useElementsLoading } from "../../slices/elementsSlice";
-import './ElementsTable.css'
+import { getHelpsWithSearch, useHelps, useHelpsLoading } from "../../slices/helpsSlice";
+import './HelpsTable.css'
 import { Link, useNavigate } from "react-router-dom";
-import { deleteElement } from "../../slices/elementSlice";
+import { deleteHelp } from "../../slices/helpSlice";
 import { useIsModerator } from "../../slices/userSlice";
 
-const ElementsTablePage: FC = () => {
+const HelpsTablePage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const navigate = useNavigate()
     const isModerator = useIsModerator()
-    const elements = useElements()
-    const loading = useElementsLoading()
+    const helps = useHelps()
+    const loading = useHelpsLoading()
 
     useEffect(() => {
         if (!isModerator) {
             navigate(ROUTES.FORBIDDEN)
         }
-        dispatch(getElementsWithSearch(''))
+        dispatch(getHelpsWithSearch(''))
     }, [])
 
     useEffect(() => {
@@ -39,9 +39,9 @@ const ElementsTablePage: FC = () => {
         return statusMap[status]
     };
 
-    const handleDelete = async (elementId: string) => {
-        await dispatch(deleteElement(elementId))
-        await dispatch(getElementsWithSearch(''))
+    const handleDelete = async (helpId: string) => {
+        await dispatch(deleteHelp(helpId))
+        await dispatch(getHelpsWithSearch(''))
     }
 
     return (
@@ -54,7 +54,7 @@ const ElementsTablePage: FC = () => {
                 <>
                 <BreadCrumbs crumbs={[{path: ROUTES.ELEMENTS, label: ROUTE_LABELS.ELEMENTS}, {label: ROUTE_LABELS.ELEMENTS_TABLE}]}/>
                 <Link to={ROUTES.ADDEDITELEMENT}>
-                    <Button variant="outline-dark" className="createElementButton">Создать</Button>
+                    <Button variant="outline-dark" className="createHelpButton">Создать</Button>
                 </Link>
                 <div className="w-100" style={{overflowX: 'auto'}}>
                     <Table className="tableStyle">
@@ -68,20 +68,20 @@ const ElementsTablePage: FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                        {elements.slice().sort((a, b) => a.element_id! - b.element_id!)
+                        {helps.slice().sort((a, b) => a.help_id! - b.help_id!)
                                 .map((item, index) => {
                             return (
                                 <tr key={index}>
-                                    <td>{item.element_id}</td>
+                                    <td>{item.help_id}</td>
                                     <td>{item.name}</td>
                                     <td>{statusFormat(item.status)}</td>
                                     <td>
-                                        <Link to={`${ROUTES.ADDEDITELEMENT}/${item.element_id}`}>
+                                        <Link to={`${ROUTES.ADDEDITELEMENT}/${item.help_id}`}>
                                             <Button variant="warning">Редактировать</Button>
                                         </Link>
                                     </td>
                                     {item.status === 'active' ? (
-                                        <td><Button variant="danger" onClick={() => handleDelete(item.element_id.toString())}>Удалить</Button></td>
+                                        <td><Button variant="danger" onClick={() => handleDelete(item.help_id.toString())}>Удалить</Button></td>
                                     ): (
                                         <td></td>
                                     )}
@@ -96,4 +96,4 @@ const ElementsTablePage: FC = () => {
         </Container>
     )
 }
-export default ElementsTablePage
+export default HelpsTablePage

@@ -1,28 +1,28 @@
 import { FC, useEffect } from 'react'
 import { Row, Col, Spinner, Container } from 'react-bootstrap';
-import ElementCard from '../../components/ElementCard/ElementCard';
-import "./Elements.css"
+import HelpCard from '../../components/HelpCard/HelpCard';
+import "./Helps.css"
 import { ROUTE_LABELS, ROUTES } from '../../Routes';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import InputField from '../../components/InputField/InputField';
 import { useDispatch } from 'react-redux';
-import { setAtomicMassAction, useAtomicMass, useElements, useElementsLoading } from '../../slices/elementsSlice';
-import { getElementsWithSearch } from '../../slices/elementsSlice';
+import { setAtomicMassAction, useAtomicMass, useHelps, useHelpsLoading } from '../../slices/helpsSlice';
+import { getHelpsWithSearch } from '../../slices/helpsSlice';
 import { AppDispatch } from '../../store';
-import { useDecayInf, useIsAuthenticated } from '../../slices/userSlice';
+import { useLesionInf, useIsAuthenticated } from '../../slices/userSlice';
 import decayLogo from '/icon-192x192.png';
 import { Link } from 'react-router-dom';
 
-const ElementsPage: FC = () => {
+const HelpsPage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const atomicMass = useAtomicMass()
-    const elements = useElements()
-    const loading = useElementsLoading()
+    const helps = useHelps()
+    const loading = useHelpsLoading()
     const isAuthenticated = useIsAuthenticated()
-    const decayInf = useDecayInf()
+    const decayInf = useLesionInf()
 
     const handleSearch = () => {
-        dispatch(getElementsWithSearch(atomicMass))
+        dispatch(getHelpsWithSearch(atomicMass))
     }
 
     useEffect(() => {
@@ -56,27 +56,27 @@ const ElementsPage: FC = () => {
                 </Row>
             ): (
                 <Row className="g-4">
-                    {elements.filter(item => item.status === 'active').map((item, index)=> (
+                    {helps.filter(item => item.status === 'active').map((item, index)=> (
                         <Col lg = {3} md={4} xs={6} key={index}>
-                            <ElementCard {...item}/>
+                            <HelpCard {...item}/>
                         </Col>
                     ))}
                 </Row>
             )}
 
-            {decayInf.decay_id && decayInf.decay_elements_count && isAuthenticated ? (
+            {decayInf.decay_id && decayInf.decay_helps_count && isAuthenticated ? (
                 <>
                     <Link to={`${ROUTES.DECAYS}/${decayInf.decay_id}`}>
-                        <img src={decayLogo} className='draftDecayLogo'/>
-                        <span className='draftDecayLogoCount d-flex justify-content-center align-items-center'>{decayInf.decay_elements_count}</span>
+                        <img src={decayLogo} className='draftLesionLogo'/>
+                        <span className='draftLesionLogoCount d-flex justify-content-center align-items-center'>{decayInf.decay_helps_count}</span>
                     </Link>
                 </>
             ) : (
-                <img src={decayLogo} className='draftDecayLogo blackNWhiteLogo'/>
+                <img src={decayLogo} className='draftLesionLogo blackNWhiteLogo'/>
             )}
             
         </Container>
     )
 }
 
-export default ElementsPage
+export default HelpsPage

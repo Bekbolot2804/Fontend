@@ -2,15 +2,15 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import { ROUTES } from "./Routes";
 import {FC} from 'react'
 import MainPage from "./pages/main/Main";
-import ElementsPage from "./pages/Elements/Elements";
-import ElementPage from "./pages/Element/Element";
+import HelpsPage from "./pages/Helps/Helps";
+import HelpPage from "./pages/Help/Help";
 import LoginPage from "./pages/Login/Login";
 import RegistrationPage from "./pages/Registration/Registration";
 import AccountPage from "./pages/Account/Account";
-import DecayPage from "./pages/Decay/Decay";
-import DecaysPage from "./pages/Decays/Decays"
-import ElementsTablePage from "./pages/ElementsTable/ElementsTable";
-import AddEditElementPage from "./pages/AddEditElement/AddEditElement";
+import LesionPage from "./pages/Lesion/Lesion";
+import LesionsPage from "./pages/Lesions/Lesions"
+import HelpsTablePage from "./pages/HelpsTable/HelpsTable";
+import AddEditHelpPage from "./pages/AddEditHelp/AddEditHelp";
 import NavigationBar from "./components/NavigationBar/NavigationBar"
 import ForbiddenPage from "./pages/Forbidden/Forbidden";
 import NotFoundPage from "./pages/NotFound/NotFound";
@@ -26,15 +26,15 @@ const App: FC = () => {
       <NavigationBar />
       <Routes>
         <Route path={ROUTES.MAIN} index element={<MainPage />} />
-        <Route path={ROUTES.ELEMENTS} index element={<ElementsPage />} />
-        <Route path={`${ROUTES.ELEMENTS}/:elementId`} element={<ElementPage />} />
+        <Route path={ROUTES.ELEMENTS} index element={<HelpsPage />} />
+        <Route path={`${ROUTES.ELEMENTS}/:helpId`} element={<HelpPage />} />
         <Route path={ROUTES.LOGIN} index element={<LoginPage />} />
         <Route path={ROUTES.REGISTRATION} index element={<RegistrationPage />} />
         <Route path={ROUTES.ACCOUNT} index element={<AccountPage />} />
-        <Route path={ROUTES.DECAYS} index element={<DecaysPage/>}/>
-        <Route path={`${ROUTES.DECAYS}/:decayId`} index element={<DecayPage />} />
-        <Route path={ROUTES.ELEMENTS_TABLE} index element={<ElementsTablePage />} />
-        <Route path={`${ROUTES.ADDEDITELEMENT}/:elementId?`} index element={<AddEditElementPage />} />
+        <Route path={ROUTES.DECAYS} index element={<LesionsPage/>}/>
+        <Route path={`${ROUTES.DECAYS}/:decayId`} index element={<LesionPage />} />
+        <Route path={ROUTES.ELEMENTS_TABLE} index element={<HelpsTablePage />} />
+        <Route path={`${ROUTES.ADDEDITELEMENT}/:helpId?`} index element={<AddEditHelpPage />} />
         <Route path={ROUTES.FORBIDDEN} index element={<ForbiddenPage />} />
         <Route path='*' index element={<NotFoundPage />} />
       </Routes>

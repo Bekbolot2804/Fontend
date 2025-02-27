@@ -47,8 +47,8 @@ const statusFormat = (status: string) => {
     return statusMap[status]
 };
 
-export const getDecays = createAsyncThunk(
-    'decays/getDecays',
+export const getLesions = createAsyncThunk(
+    'decays/getLesions',
     async (credentials: {start_date?: string, end_date?: string, status?: string}, { rejectWithValue }) => {
         try {
             const response = await api.decays.decaysList({start_date: credentials?.start_date, 
@@ -61,8 +61,8 @@ export const getDecays = createAsyncThunk(
     }
 )
 
-export const moderateDecay = createAsyncThunk(
-    'decays/moderateDecay',
+export const moderateLesion = createAsyncThunk(
+    'decays/moderateLesion',
     async (decayId: number, {rejectWithValue}) => {
         try {
             const response = await api.decay.decayModerateUpdate(decayId.toString(), {accept: 'true'})
@@ -73,8 +73,8 @@ export const moderateDecay = createAsyncThunk(
     }
 )
 
-export const rejectDecay = createAsyncThunk(
-  'decays/rejectDecay',
+export const rejectLesion = createAsyncThunk(
+  'decays/rejectLesion',
   async (decayId: number, {rejectWithValue}) => {
       try {
           const response = await api.decay.decayModerateUpdate(decayId.toString(), {accept: 'false'})
@@ -104,15 +104,15 @@ const decaysSlice = createSlice({
             state.start_date = ''
             state.email = ''
         },
-        setDecaysEmail(state, {payload}) {
+        setLesionsEmail(state, {payload}) {
             state.email = payload
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(getDecays.pending, (state) => {
+        builder.addCase(getLesions.pending, (state) => {
             state.loading = true
         }),
-        builder.addCase(getDecays.fulfilled, (state, {payload}) => {
+        builder.addCase(getLesions.fulfilled, (state, {payload}) => {
             state.decays = payload
             state.decays.forEach((item, index) => {
                 if (item.date_of_creation) {
@@ -128,51 +128,51 @@ const decaysSlice = createSlice({
             })
             state.loading = false
         }),
-        builder.addCase(getDecays.rejected, (state) => {
+        builder.addCase(getLesions.rejected, (state) => {
             state.loading = false
         }),
-        builder.addCase(moderateDecay.pending, (state) => {
+        builder.addCase(moderateLesion.pending, (state) => {
             state.loading = true
         }),
-        builder.addCase(moderateDecay.fulfilled, (state, {payload}) => {
-            const element = state.decays.find((el) => el.decay_id === payload.decay_id)
-            element!.status = statusFormat(payload.status!)
-            element!.date_of_finish = dateFormat(payload.date_of_finish!)
-            element!.moderator = payload.moderator
+        builder.addCase(moderateLesion.fulfilled, (state, {payload}) => {
+            const help = state.decays.find((el) => el.decay_id === payload.decay_id)
+            help!.status = statusFormat(payload.status!)
+            help!.date_of_finish = dateFormat(payload.date_of_finish!)
+            help!.moderator = payload.moderator
             state.loading = false
         }),
-        builder.addCase(moderateDecay.rejected, (state) => {
+        builder.addCase(moderateLesion.rejected, (state) => {
             state.loading = false
         }),
-        builder.addCase(rejectDecay.pending, (state) => {
+        builder.addCase(rejectLesion.pending, (state) => {
             state.loading = true
         }),
-        builder.addCase(rejectDecay.fulfilled, (state, {payload}) => {
-            const element = state.decays.find((el) => el.decay_id === payload.decay_id)
-            element!.status = statusFormat(payload.status!)
-            element!.date_of_finish = dateFormat(payload.date_of_finish!)
-            element!.moderator = payload.moderator
+        builder.addCase(rejectLesion.fulfilled, (state, {payload}) => {
+            const help = state.decays.find((el) => el.decay_id === payload.decay_id)
+            help!.status = statusFormat(payload.status!)
+            help!.date_of_finish = dateFormat(payload.date_of_finish!)
+            help!.moderator = payload.moderator
             state.loading = false
         }),
-        builder.addCase(rejectDecay.rejected, (state) => {
+        builder.addCase(rejectLesion.rejected, (state) => {
             state.loading = false
         })
     }
 })
 
-export const useDecays = () => useSelector((state: RootState) => state.decays.decays)
+export const useLesions = () => useSelector((state: RootState) => state.decays.decays)
 export const useStartDate = () => useSelector((state: RootState) => state.decays.start_date)
 export const useEndDate = () => useSelector((state: RootState) => state.decays.end_date)
 export const useStatus = () => useSelector((state: RootState) => state.decays.status)
-export const useDecaysLoading = () => useSelector((state: RootState) => state.decays.loading)
-export const useDecaysEmail = () => useSelector((state: RootState) => state.decays.email)
+export const useLesionsLoading = () => useSelector((state: RootState) => state.decays.loading)
+export const useLesionsEmail = () => useSelector((state: RootState) => state.decays.email)
 
 export const {
     setFilterStartDate: setFilterStartDateAction,
     setFilterEndDate: setFilterEndDateAction,
     setFilterStatus: setFilterStatusAction,
     resetFilters: resetFiltersAction,
-    setDecaysEmail: setDecaysEmailAction
+    setLesionsEmail: setLesionsEmailAction
 } = decaysSlice.actions
 
 export default decaysSlice.reducer

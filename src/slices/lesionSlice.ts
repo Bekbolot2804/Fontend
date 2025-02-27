@@ -3,16 +3,16 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { api } from "../api/index";
 
-interface elementForDecay {
-    element_id?: number;
+interface helpForLesion {
+    help_id?: number;
     name: string;
     status?: string;
     img_url?: string | null;
   }
 
-interface elementDecay {
+interface helpLesion {
   id?: number;
-  element?: elementForDecay;
+  help?: helpForLesion;
   quantity?: string | null;
   remaining_quantity?: string | null;
   decay?: number;
@@ -20,7 +20,7 @@ interface elementDecay {
 
 interface decay {
   decay_id?: number;
-  elements?: elementDecay[];
+  helps?: helpLesion[];
   creator?: string;
   moderator?: string;
   status?: string;
@@ -40,8 +40,8 @@ const initialState: decayState = {
     loading: false
 }
 
-export const getDecayInformation = createAsyncThunk(
-    'decay/getDecayInformation',
+export const getLesionInformation = createAsyncThunk(
+    'decay/getLesionInformation',
     async (decayId: string, { rejectWithValue }) => {
       try {
         const response = await api.decay.decayRead(decayId)
@@ -52,12 +52,12 @@ export const getDecayInformation = createAsyncThunk(
     }
 )
 
-export const deleteElementFromDecay = createAsyncThunk(
-    'decay/deleteElementFromDecay',
-    async (credentials: {decayId: number, elementId: number}, { dispatch,rejectWithValue }) => {
+export const deleteHelpFromLesion = createAsyncThunk(
+    'decay/deleteHelpFromLesion',
+    async (credentials: {decayId: number, helpId: number}, { dispatch,rejectWithValue }) => {
         try {
-            const response = await api.elementDecay.elementDecayDelete(credentials.elementId.toString(), credentials.decayId.toString())
-            dispatch(deleteElementFromDecayAction({elementId: credentials.elementId, decayId: credentials.decayId}))
+            const response = await api.helpLesion.helpLesionDelete(credentials.helpId.toString(), credentials.decayId.toString())
+            dispatch(deleteHelpFromLesionAction({helpId: credentials.helpId, decayId: credentials.decayId}))
             return response.data
         } catch (error: any) {
           return rejectWithValue("Произошла ошибка")
@@ -79,9 +79,9 @@ export const savePassTime = createAsyncThunk(
 
 export const saveQuantity = createAsyncThunk(
   'decay/saveQuantity',
-  async (credentials: {decayId: number, elementId: number, quantity: string}, { rejectWithValue }) => {
+  async (credentials: {decayId: number, helpId: number, quantity: string}, { rejectWithValue }) => {
       try {
-          const response = await api.elementDecay.elementDecayUpdate(credentials.elementId.toString(), credentials.decayId.toString(), {quantity: credentials.quantity})
+          const response = await api.helpLesion.helpLesionUpdate(credentials.helpId.toString(), credentials.decayId.toString(), {quantity: credentials.quantity})
           return response.data
       } catch (error: any) {
         return rejectWithValue("Произошла ошибка")
@@ -89,8 +89,8 @@ export const saveQuantity = createAsyncThunk(
   }
 )
 
-export const deleteDecay = createAsyncThunk(
-  'decay/deleteDecay',
+export const deleteLesion = createAsyncThunk(
+  'decay/deleteLesion',
   async (decayId: number, { rejectWithValue }) => {
       try {
           const response = await api.decay.decayFormingDelete(decayId.toString())
@@ -101,8 +101,8 @@ export const deleteDecay = createAsyncThunk(
   }
 )
 
-export const formDecay = createAsyncThunk(
-  'decay/formDecay',
+export const formLesion = createAsyncThunk(
+  'decay/formLesion',
   async (decayId: number, { rejectWithValue }) => {
       try {
           const response = await api.decay.decayFormingUpdate(decayId.toString())
@@ -117,40 +117,40 @@ const decaySlice = createSlice({
     name: 'decay',
     initialState,
     reducers: {
-      setDecayPassTime(state, {payload}) {
+      setLesionPassTime(state, {payload}) {
         state.decay.pass_time = payload
       },
-      setDecayElementQuantity(state, {payload}) {
-        const element = state.decay.elements?.find((el) => el.element?.element_id === payload.element_id)
-        element!.quantity = payload.quantity
+      setLesionHelpQuantity(state, {payload}) {
+        const help = state.decay.helps?.find((el) => el.help?.help_id === payload.help_id)
+        help!.quantity = payload.quantity
       },
-      deleteElementFromDecay(state, {payload}) {
-        state.decay.elements = state.decay.elements?.filter((el) => el.element?.element_id !== payload.elementId)
+      deleteHelpFromLesion(state, {payload}) {
+        state.decay.helps = state.decay.helps?.filter((el) => el.help?.help_id !== payload.helpId)
       }
     },
     extraReducers: (builder) => {
-        builder.addCase(getDecayInformation.pending, (state) => {
+        builder.addCase(getLesionInformation.pending, (state) => {
           state.loading = true
         }),
-        builder.addCase(getDecayInformation.fulfilled, (state, {payload}) => {
+        builder.addCase(getLesionInformation.fulfilled, (state, {payload}) => {
           state.decay = payload
           state.loading = false
         }),
-        builder.addCase(getDecayInformation.rejected, (state) => {
+        builder.addCase(getLesionInformation.rejected, (state) => {
           state.loading = false
         })
     }
 })
 
-export const useDecay = () => useSelector((state: RootState) => state.decay.decay)
-export const useDecayElements = () => useSelector((state: RootState) => state.decay.decay.elements)
-export const useDecayLoading = () => useSelector((state: RootState) => state.decay.loading)
-export const useDecayStatus = () => useSelector((state: RootState) => state.decay.decay.status)
+export const useLesion = () => useSelector((state: RootState) => state.decay.decay)
+export const useLesionHelps = () => useSelector((state: RootState) => state.decay.decay.helps)
+export const useLesionLoading = () => useSelector((state: RootState) => state.decay.loading)
+export const useLesionStatus = () => useSelector((state: RootState) => state.decay.decay.status)
 
 export const {
-  setDecayPassTime: setDecayPassTimeAction,
-  setDecayElementQuantity: setDecayElementQuantityAction,
-  deleteElementFromDecay: deleteElementFromDecayAction
+  setLesionPassTime: setLesionPassTimeAction,
+  setLesionHelpQuantity: setLesionHelpQuantityAction,
+  deleteHelpFromLesion: deleteHelpFromLesionAction
 } = decaySlice.actions
 
 export default decaySlice.reducer

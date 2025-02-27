@@ -3,21 +3,21 @@ import { Button, Col, Container, Dropdown, Form, Image, Row, Spinner, Table } fr
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../Routes";
 import { useNavigate, useParams } from "react-router-dom";
-import { editElement, getElementWithId, saveElementImage, setElementAtomicMassAction, setElementDescriptionAction, setElementInitialStateAction, setElementNameAction, setElementPeriodTimeAction, setElementPeriodTimeTextAction, setElementStatusAction, useElement, useElementLoading, createElement, setElementAttributeValueAction, editElementAttribute, deleteElementAttribute, useElementAttributeName, useElementAttributeValue, setElementAttributeAddNameAction, addElementAttribute, setElementAttributeAddValueAction } from "../../slices/elementSlice";
+import { editHelp, getHelpWithId, saveHelpImage, setHelpAtomicMassAction, setHelpDescriptionAction, setHelpInitialStateAction, setHelpNameAction, setHelpPeriodTimeAction, setHelpPeriodTimeTextAction, setHelpStatusAction, useHelp, useHelpLoading, createHelp, setHelpAttributeValueAction, editHelpAttribute, deleteHelpAttribute, useHelpAttributeName, useHelpAttributeValue, setHelpAttributeAddNameAction, addHelpAttribute, setHelpAttributeAddValueAction } from "../../slices/helpSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import defaultImg from '/default.jpg'
-import './AddEditElement.css'
+import './AddEditHelp.css'
 import { useIsModerator } from "../../slices/userSlice";
 
-const AddEditElementPage: FC = () => {
-    const {elementId} = useParams()
+const AddEditHelpPage: FC = () => {
+    const {helpId} = useParams()
     const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
-    const loading = useElementLoading()
-    const element = useElement()
-    const attributeName = useElementAttributeName()
-    const attributeValue = useElementAttributeValue()
+    const loading = useHelpLoading()
+    const help = useHelp()
+    const attributeName = useHelpAttributeName()
+    const attributeValue = useHelpAttributeValue()
     const isModerator = useIsModerator()
     const [selectedImage, setSelectedImage] = useState<File | null>(null)
     const [previewImageUrl, setPreviewImageUrl] = useState<string>('')
@@ -26,10 +26,10 @@ const AddEditElementPage: FC = () => {
         if (!isModerator) {
             navigate(ROUTES.FORBIDDEN)
         }
-        if (elementId) {
-            dispatch(getElementWithId(elementId))
+        if (helpId) {
+            dispatch(getHelpWithId(helpId))
         } else {
-            dispatch(setElementInitialStateAction())
+            dispatch(setHelpInitialStateAction())
         }
     }, [])
 
@@ -50,13 +50,13 @@ const AddEditElementPage: FC = () => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault()
-        if (elementId) {
-            dispatch(editElement(elementId))
+        if (helpId) {
+            dispatch(editHelp(helpId))
             if (selectedImage) {
-                dispatch(saveElementImage({elementId: elementId, file: selectedImage}))
+                dispatch(saveHelpImage({helpId: helpId, file: selectedImage}))
             }
         } else {
-            dispatch(createElement())
+            dispatch(createHelp())
         }
         navigate(ROUTES.ELEMENTS_TABLE)
     }
@@ -68,11 +68,11 @@ const AddEditElementPage: FC = () => {
     }
 
     const handleAttributeUpdate = (attributeId: number) => {
-        dispatch(editElementAttribute({elementId: element.element_id!, attributeId}))
+        dispatch(editHelpAttribute({helpId: help.help_id!, attributeId}))
     }
 
     const handleAttributeDelete = (attributeId: number) => {
-        dispatch(deleteElementAttribute({elementId: element.element_id!, attributeId: attributeId}))
+        dispatch(deleteHelpAttribute({helpId: help.help_id!, attributeId: attributeId}))
     }
 
     const handleAttributeAdd = (event: FormEvent) => {
@@ -81,12 +81,12 @@ const AddEditElementPage: FC = () => {
             alert('Введите название атрибута')
             return
         }
-        dispatch(addElementAttribute(element.element_id?.toString()!))
+        dispatch(addHelpAttribute(help.help_id?.toString()!))
     }
 
     return (
         <Container className="w-100 rootContainer">
-            {elementId ? (
+            {helpId ? (
                 <BreadCrumbs crumbs={[{path: ROUTES.ELEMENTS, label: ROUTE_LABELS.ELEMENTS}, 
                                       {path: ROUTES.ELEMENTS_TABLE, label: ROUTE_LABELS.ELEMENTS_TABLE}, 
                                       {label: 'Редактирование элемента'}]}/>
@@ -101,10 +101,10 @@ const AddEditElementPage: FC = () => {
             <Row className="w-100">
                 <Col lg={6} md={8} xs={12} className="mx-auto">
                     <Form onSubmit={handleSubmit} className="w-100">
-                        {elementId &&
+                        {helpId &&
                         <>
                             <div className="w-100 d-flex justify-content-center">
-                                <Image src={previewImageUrl || element.img_url || defaultImg} className="editImg"/>
+                                <Image src={previewImageUrl || help.img_url || defaultImg} className="editImg"/>
                             </div>
                             <Form.Label className="editFormLabel mt-3">Загрузите иконку:</Form.Label>
                             <Form.Control type="file"
@@ -113,25 +113,25 @@ const AddEditElementPage: FC = () => {
                                         className="editFileInput border-dark"/>
                         </>}
                         <Form.Label className="editFormLabel mt-3">Название:</Form.Label>
-                        <Form.Control value={element.name}
-                                      onChange={(e) => dispatch(setElementNameAction(e.target.value))}
+                        <Form.Control value={help.name}
+                                      onChange={(e) => dispatch(setHelpNameAction(e.target.value))}
                                       className="w-100 editFormInput border-dark"
                                       required/>
                         <Form.Label className="editFormLabel mt-3">Атомная масса:</Form.Label>
-                        <Form.Control value={element.atomic_mass}
-                                      onChange={(e) => dispatch(setElementAtomicMassAction(e.target.value))}
+                        <Form.Control value={help.atomic_mass}
+                                      onChange={(e) => dispatch(setHelpAtomicMassAction(e.target.value))}
                                       className="w-100 editFormInput border-dark"
                                       required/>
                         <Form.Label className="editFormLabel mt-3">Описание:</Form.Label>
-                        <Form.Control value={element.description}
-                                      onChange={(e) => dispatch(setElementDescriptionAction(e.target.value))}
+                        <Form.Control value={help.description}
+                                      onChange={(e) => dispatch(setHelpDescriptionAction(e.target.value))}
                                       className="w-100 editDescription editFormInput border-dark"
                                       as={'textarea'}
                                       required/>
                         <Form.Label className="editFormLabel mt-3">Статус:</Form.Label>
-                        <Dropdown onSelect={(eventKey) => dispatch(setElementStatusAction(eventKey))}>
+                        <Dropdown onSelect={(eventKey) => dispatch(setHelpStatusAction(eventKey))}>
                             <Dropdown.Toggle variant="outline-dark" className="editStatus">
-                                {statusFormat(element.status)}
+                                {statusFormat(help.status)}
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                                 <Dropdown.Item eventKey="active" className="editStatus">Активный</Dropdown.Item>
@@ -139,38 +139,38 @@ const AddEditElementPage: FC = () => {
                             </Dropdown.Menu>
                         </Dropdown>
                         <Form.Label className="editFormLabel mt-3">Период полураспада (то, что видно на экране):</Form.Label>
-                        <Form.Control value={element.period_time_text}
-                                      onChange={(e) => dispatch(setElementPeriodTimeTextAction(e.target.value))}
+                        <Form.Control value={help.period_time_text}
+                                      onChange={(e) => dispatch(setHelpPeriodTimeTextAction(e.target.value))}
                                       className="w-100 editFormInput border-dark"
                                       required/>
                         <Form.Label className="editFormLabel mt-3">Период полураспада в секундах:</Form.Label>
-                        <Form.Control value={element.period_time}
-                                      onChange={(e) => dispatch(setElementPeriodTimeAction(e.target.value))}
+                        <Form.Control value={help.period_time}
+                                      onChange={(e) => dispatch(setHelpPeriodTimeAction(e.target.value))}
                                       className="w-100 editFormInput border-dark"
                                       required/>
-                        {elementId ? ( <>
-                        {element.attributes?.length !== 0 && (
+                        {helpId ? ( <>
+                        {help.attributes?.length !== 0 && (
                         <>
                             <Form.Label className="editFormLabel mt-3">Атрибуты:</Form.Label>
-                            <Table className="border-dark elementAddEditAttributes">
+                            <Table className="border-dark helpAddEditAttributes">
                                 <tbody>
-                                    {element.attributes?.map((item, index) => {
+                                    {help.attributes?.map((item, index) => {
                                         return (
                                             <tr>
                                                 <td>{item.attribute?.name}</td>
                                                 <td><Form.Control value={item.value!}
-                                                                onChange={(e) => dispatch(setElementAttributeValueAction({attribute_id: item.attribute?.attribute_id, 
+                                                                onChange={(e) => dispatch(setHelpAttributeValueAction({attribute_id: item.attribute?.attribute_id, 
                                                                                                                             value: e.target.value}))}
                                                                 className="border-dark w-100"/>
                                                 </td>
                                                 <td><Button variant="success" 
-                                                            className="elementAddEditAttributesButton" 
+                                                            className="helpAddEditAttributesButton" 
                                                             onClick={() => handleAttributeUpdate(item.attribute?.attribute_id!)}>
                                                         Сохранить
                                                     </Button>
                                                 </td>
                                                 <td><Button variant="danger" 
-                                                            className="elementAddEditAttributesButton" 
+                                                            className="helpAddEditAttributesButton" 
                                                             onClick={() => handleAttributeDelete(item.attribute?.attribute_id!)}>
                                                         Удалить
                                                     </Button>
@@ -182,16 +182,16 @@ const AddEditElementPage: FC = () => {
                             </Table>
                         </>
                         )}
-                        <Form.Label className={element.attributes?.length === 0 ? "editFormLabel mt-3" : "editFormLabel"}>Добавление атрибута:</Form.Label>
+                        <Form.Label className={help.attributes?.length === 0 ? "editFormLabel mt-3" : "editFormLabel"}>Добавление атрибута:</Form.Label>
                         <div className="d-flex flex-row">
                             <Form.Control value={attributeName!}
-                                        onChange={(e) => dispatch(setElementAttributeAddNameAction(e.target.value))}
+                                        onChange={(e) => dispatch(setHelpAttributeAddNameAction(e.target.value))}
                                         placeholder="Название"
-                                        className="elementAttributeNameValue border-dark"/>
+                                        className="helpAttributeNameValue border-dark"/>
                             <Form.Control value={attributeValue!}
-                                        onChange={(e) => dispatch(setElementAttributeAddValueAction(e.target.value))}
+                                        onChange={(e) => dispatch(setHelpAttributeAddValueAction(e.target.value))}
                                         placeholder="Значение"
-                                        className="elementAttributeNameValue border-dark"/>
+                                        className="helpAttributeNameValue border-dark"/>
                             <Button variant="outline-dark" type="button" onClick={handleAttributeAdd}>Добавить</Button>
                         </div>
                         </>) : (<></>)}
@@ -205,4 +205,4 @@ const AddEditElementPage: FC = () => {
         </Container>
     )
 }
-export default AddEditElementPage
+export default AddEditHelpPage

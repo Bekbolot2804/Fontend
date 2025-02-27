@@ -8,7 +8,7 @@
     padding-bottom: 30px;
 }
 
-.draftDecayLogo {
+.draftLesionLogo {
     border-radius: 20%;
     position: fixed;
     bottom: 20px;
@@ -20,7 +20,7 @@
     filter: grayscale(100%)
 }
 
-.draftDecayLogoCount {
+.draftLesionLogoCount {
     background-color: red;
     position: fixed;
     bottom: 62px;

@@ -1,23 +1,23 @@
 import { FC, useEffect } from 'react'
 import { Col, Container, Row, Image, Spinner, Table} from "react-bootstrap";
 import { useParams } from 'react-router-dom';
-import { getElementWithId } from '../../slices/elementSlice';
+import { getHelpWithId } from '../../slices/helpSlice';
 import BreadCrumbs from '../../components/BreadCrumbs/BreadCrumbs';
 import { ROUTE_LABELS, ROUTES } from '../../Routes';
 import defaultImg from '/default.jpg'
-import './Element.css'
-import { useElement, useElementLoading } from '../../slices/elementSlice';
+import './Help.css'
+import { useHelp, useHelpLoading } from '../../slices/helpSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 
-const ElementPage: FC = () => {
+const HelpPage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const elementContent = useElement()
-    const loading = useElementLoading()
-    const {elementId} = useParams();
+    const helpContent = useHelp()
+    const loading = useHelpLoading()
+    const {helpId} = useParams();
 
     const loadContent = async () => {
-        await dispatch(getElementWithId(elementId!))
+        await dispatch(getHelpWithId(helpId!))
     }
 
     useEffect(() => {
@@ -26,7 +26,7 @@ const ElementPage: FC = () => {
 
     return (
         <Container className='w-100 rootContainer'>
-            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.ELEMENTS, path: ROUTES.ELEMENTS}, {label: elementContent?.name}]}/>
+            <BreadCrumbs crumbs={[{label: ROUTE_LABELS.ELEMENTS, path: ROUTES.ELEMENTS}, {label: helpContent?.name}]}/>
 
             {loading ? (
                 <div  className='d-flex justify-content-center align-items-center'>
@@ -36,21 +36,21 @@ const ElementPage: FC = () => {
                 <>
                     <Row>
                         <Col md={2} xs={4}>
-                            <Image src={elementContent?.img_url || defaultImg} fluid/>
+                            <Image src={helpContent?.img_url || defaultImg} fluid/>
                         </Col>
                         <Col md={10} xs={8}>
-                            <h1 className='elementName'>{elementContent?.name}</h1>
+                            <h1 className='helpName'>{helpContent?.name}</h1>
                         </Col>
                     </Row>
                     <Row>
-                        <p className='elementDescription' dangerouslySetInnerHTML={{__html: elementContent?.description}}/>
+                        <p className='helpDescription' dangerouslySetInnerHTML={{__html: helpContent?.description}}/>
                     </Row>
                     <Row>
                         <Col lg={{span: 6, offset: 3}} md={{span:8, offset: 2}} xs={12}>
-                        <p className='elementAttributesLabel'>Атрибуты:</p>
-                            <Table bordered className='border-dark elementAttributes'>
+                        <p className='helpAttributesLabel'>Атрибуты:</p>
+                            <Table bordered className='border-dark helpAttributes'>
                                 <tbody>
-                                    {elementContent.attributes?.map((item, index) => {
+                                    {helpContent.attributes?.map((item, index) => {
                                         return (
                                             <tr key={index}>
                                                 <td>{item.attribute?.name}</td>
@@ -67,4 +67,4 @@ const ElementPage: FC = () => {
         </Container>
     )
 }
-export default ElementPage;
+export default HelpPage;

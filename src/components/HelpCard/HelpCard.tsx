@@ -3,14 +3,14 @@ import { Button, Card } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../Routes";
 import defaultImg from '/default.jpg'
-import './ElementCard.css'
+import './HelpCard.css'
 import { useIsAuthenticated } from '../../slices/userSlice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
-import { addElementToDecay } from '../../slices/elementsSlice';
+import { addHelpToLesion } from '../../slices/helpsSlice';
 
-interface elementProps {
-  element_id: number,
+interface helpProps {
+  help_id: number,
   name: string,
   description: string,
   status: string,
@@ -20,12 +20,12 @@ interface elementProps {
   atomic_mass: number
 }
 
-export const ElementCard: FC<elementProps> = ({ element_id, name, img_url }) => {
+export const HelpCard: FC<helpProps> = ({ help_id, name, img_url }) => {
   const dispatch = useDispatch<AppDispatch>()
   const isAuthenticated = useIsAuthenticated()
 
   const handleAdd = () => {
-    dispatch(addElementToDecay(element_id.toString()))
+    dispatch(addHelpToLesion(help_id.toString()))
   }
 
   return (
@@ -34,11 +34,11 @@ export const ElementCard: FC<elementProps> = ({ element_id, name, img_url }) => 
       <Card.Body>
         <Card.Title className='cardTitle'>{name}</Card.Title>
         {isAuthenticated && (<Button className='w-100 customButton' variant="dark" onClick={handleAdd}>Добавить</Button>)}
-        <Link to={`${ROUTES.ELEMENTS}/${element_id}`}>
+        <Link to={`${ROUTES.ELEMENTS}/${help_id}`}>
           <Button className='w-100 customButton' variant="primary" style={{ ...(isAuthenticated && {marginTop: "5px"})}}>Подробнее</Button>
         </Link>
       </Card.Body>
     </Card>
   )
 }
-export default ElementCard;
+export default HelpCard;

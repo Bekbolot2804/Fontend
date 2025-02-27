@@ -1,15 +1,15 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import elementsReducer from './slices/elementsSlice'
+import helpsReducer from './slices/helpsSlice'
 import userReducer from './slices/userSlice'
-import elementReducer from './slices/elementSlice'
-import decayReducer from './slices/decaySlice'
-import decaysReducer from './slices/decaysSlice'
+import helpReducer from './slices/helpSlice'
+import decayReducer from './slices/lesionSlice'
+import decaysReducer from './slices/lesionsSlice'
 
 export const store = configureStore ({
     reducer: combineReducers({
-        elements: elementsReducer,
+        helps: helpsReducer,
         user: userReducer,
-        element: elementReducer,
+        help: helpReducer,
         decay: decayReducer,
         decays: decaysReducer
     })

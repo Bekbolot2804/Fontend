@@ -8,8 +8,8 @@ import './NavigationBar.css'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
 import { useEmail, useIsAuthenticated, useIsModerator, userLogout } from '../../slices/userSlice';
-import { setAtomicMassAction } from '../../slices/elementsSlice';
-import { resetFiltersAction } from '../../slices/decaysSlice';
+import { setAtomicMassAction } from '../../slices/helpsSlice';
+import { resetFiltersAction } from '../../slices/lesionsSlice';
 
 const NavigationBar: FC = () => {
   const dispatch = useDispatch<AppDispatch>()

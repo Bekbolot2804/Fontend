@@ -5,7 +5,7 @@ import { api } from "../api/index";
 
 interface decayInf {
     decay_id: number,
-    decay_elements_count: number
+    decay_helps_count: number
 }
 
 interface userState {
@@ -23,7 +23,7 @@ const initialState: userState = {
     loading: false,
     decayInf: {
         decay_id: 0,
-        decay_elements_count: 0
+        decay_helps_count: 0
     }
 }
 
@@ -79,11 +79,11 @@ const userSlice = createSlice ({
     name: 'user',
     initialState,
     reducers: {
-        setDecayInf(state, {payload}) {
+        setLesionInf(state, {payload}) {
             state.decayInf = payload
         },
-        setDecayCountZero(state) {
-            state.decayInf.decay_elements_count = 0
+        setLesionCountZero(state) {
+            state.decayInf.decay_helps_count = 0
         }
     },
     extraReducers: (builder) => {
@@ -140,11 +140,11 @@ export const useEmail = () => useSelector((state: RootState) => state.user.email
 export const useIsAuthenticated = () => useSelector((state: RootState) => state.user.isAuthenticated)
 export const useIsModerator = () => useSelector((state: RootState) => state.user.isModerator)
 export const useUserLoading = () => useSelector((state: RootState) => state.user.loading)
-export const useDecayInf = () => useSelector((state: RootState) => state.user.decayInf)
+export const useLesionInf = () => useSelector((state: RootState) => state.user.decayInf)
 
 export const {
-    setDecayInf: setDecayInfAction,
-    setDecayCountZero: setDecayCountZeroAction,
+    setLesionInf: setLesionInfAction,
+    setLesionCountZero: setLesionCountZeroAction,
 } = userSlice.actions
 
 export default userSlice.reducer

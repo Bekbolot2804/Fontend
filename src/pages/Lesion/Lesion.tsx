@@ -2,26 +2,26 @@ import { FC, FormEvent, useEffect } from "react";
 import { Container, Form, Row, InputGroup, Button, Spinner } from "react-bootstrap";
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTES, ROUTE_LABELS } from "../../Routes";
-import { useDecay, setDecayPassTimeAction, getDecayInformation, useDecayLoading, deleteDecay, saveQuantity, savePassTime, formDecay, useDecayStatus } from "../../slices/decaySlice";
+import { useLesion, setLesionPassTimeAction, getLesionInformation, useLesionLoading, deleteLesion, saveQuantity, savePassTime, formLesion, useLesionStatus } from "../../slices/lesionSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
-import './Decay.css'
+import './Lesion.css'
 import { useNavigate, useParams } from "react-router-dom";
-import ElementDecayCard from "../../components/ElementDecayCard.tsx/ElementDecayCard";
+import HelpLesionCard from "../../components/HelpLesionCard.tsx/HelpLesionCard";
 import { useIsAuthenticated } from "../../slices/userSlice";
 
-const DecayPage: FC = () => {
+const LesionPage: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const isAuthenticated = useIsAuthenticated()
-    const decay = useDecay()
-    const loading = useDecayLoading()
+    const decay = useLesion()
+    const loading = useLesionLoading()
     const { decayId } = useParams()
     const navigate = useNavigate()
-    const status = useDecayStatus()
+    const status = useLesionStatus()
     const saveFields = () => {
         dispatch(savePassTime({decayId: decay.decay_id!, passTime: decay.pass_time!}))
-        decay.elements?.forEach((item, index) => {
-            dispatch(saveQuantity({elementId: item.element?.element_id!, decayId: item.decay!, quantity: item.quantity!}))
+        decay.helps?.forEach((item, index) => {
+            dispatch(saveQuantity({helpId: item.help?.help_id!, decayId: item.decay!, quantity: item.quantity!}))
         })
     }
 
@@ -29,7 +29,7 @@ const DecayPage: FC = () => {
         event.preventDefault()
         saveFields()
         setTimeout(() => {
-            dispatch(formDecay(decay.decay_id!))
+            dispatch(formLesion(decay.decay_id!))
         }, 500)
         setTimeout(() => {
             navigate(ROUTES.ELEMENTS)
@@ -37,7 +37,7 @@ const DecayPage: FC = () => {
     }
 
     const handleDelete = async () => {
-        await dispatch(deleteDecay(decay.decay_id!))
+        await dispatch(deleteLesion(decay.decay_id!))
         navigate(ROUTES.ELEMENTS)
     }
 
@@ -49,7 +49,7 @@ const DecayPage: FC = () => {
         if (!isAuthenticated) {
             navigate(ROUTES.FORBIDDEN)
         }
-        dispatch(getDecayInformation(decayId!))
+        dispatch(getLesionInformation(decayId!))
     }, [])
     
     useEffect(() => {
@@ -76,7 +76,7 @@ const DecayPage: FC = () => {
                                 <Form.Label className="decayText my-auto formLabel">Прошло времени:</Form.Label>
                                 <Form.Control className="decayText border-dark"
                                             value={decay.pass_time!}
-                                            onChange={(e) => dispatch(setDecayPassTimeAction(e.target.value))}
+                                            onChange={(e) => dispatch(setLesionPassTimeAction(e.target.value))}
                                             required
                                             placeholder="Введите время"
                                             {...status !== "draft" ? {readOnly: true} : {}}/>
@@ -90,17 +90,17 @@ const DecayPage: FC = () => {
                     </div>
                 </div>
 
-                {decay.elements && decay.elements!.map((item, index)=> (
+                {decay.helps && decay.helps!.map((item, index)=> (
                                         <div className="w-100 d-flex align-items justify-content-center">
                                             <div className="pb-3 w-75" >
-                                                <ElementDecayCard {...item}/>
+                                                <HelpLesionCard {...item}/>
                                             </div>
                                         </div>
                                     ))}
 
                 {status === "draft" ? (
                     <div className="d-flex flex-row justify-content-center gap-3">
-                        { decay.elements!.length ? (
+                        { decay.helps!.length ? (
                             <>
                                 <Button type="submit" variant="dark" className="customButton">Сформировать</Button>
                                 <Button variant="danger" className="customButton" onClick={handleDelete}>Удалить</Button>
@@ -116,4 +116,4 @@ const DecayPage: FC = () => {
         </Container>
     )
 }
-export default DecayPage
+export default LesionPage
