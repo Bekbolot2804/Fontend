@@ -20,7 +20,7 @@ interface elementProps {
   atomic_mass: number
 }
 
-export const ElementCard: FC<elementProps> = ({ element_id, name, img_url, period_time_text }) => {
+export const ElementCard: FC<elementProps> = ({ element_id, name, img_url }) => {
   const dispatch = useDispatch<AppDispatch>()
   const isAuthenticated = useIsAuthenticated()
 
