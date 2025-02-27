@@ -3,7 +3,7 @@ import { Button, Col, Container, Dropdown, Form, Image, Row, Spinner, Table } fr
 import BreadCrumbs from "../../components/BreadCrumbs/BreadCrumbs";
 import { ROUTE_LABELS, ROUTES } from "../../Routes";
 import { useNavigate, useParams } from "react-router-dom";
-import { editHelp, getHelpWithId, saveHelpImage, setHelpAtomicMassAction, setHelpDescriptionAction, setHelpInitialStateAction, setHelpNameAction, setHelpStatusAction, useHelp, useHelpLoading, createHelp, setHelpAttributeValueAction, editHelpAttribute, deleteHelpAttribute, useHelpAttributeName, useHelpAttributeValue, setHelpAttributeAddNameAction, addHelpAttribute, setHelpAttributeAddValueAction } from "../../slices/helpSlice";
+import { editHelp, getHelpWithId, saveHelpImage, setHelpDurationAction, setHelpDescriptionAction, setHelpInitialStateAction, setHelpNameAction, setHelpStatusAction, useHelp, useHelpLoading, createHelp, setHelpAttributeValueAction, editHelpAttribute, deleteHelpAttribute, useHelpAttributeName, useHelpAttributeValue, setHelpAttributeAddNameAction, addHelpAttribute, setHelpAttributeAddValueAction } from "../../slices/helpSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store";
 import defaultImg from '/default.jpg'
@@ -89,7 +89,7 @@ const AddEditHelpPage: FC = () => {
             {helpId ? (
                 <BreadCrumbs crumbs={[{path: ROUTES.HELPS, label: ROUTE_LABELS.HELPS}, 
                                       {path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, 
-                                      {label: 'Редактирование элемента'}]}/>
+                                      {label: 'Редактирование помощи'}]}/>
             ) : (
                 <BreadCrumbs crumbs={[{path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, {label: 'Создание элемента'}]}/>
             )}
@@ -117,9 +117,9 @@ const AddEditHelpPage: FC = () => {
                                       onChange={(e) => dispatch(setHelpNameAction(e.target.value))}
                                       className="w-100 editFormInput border-dark"
                                       required/>
-                        <Form.Label className="editFormLabel mt-3">Атомная масса:</Form.Label>
+                        <Form.Label className="editFormLabel mt-3">Необходимое время:</Form.Label>
                         <Form.Control value={help.duration}
-                                      onChange={(e) => dispatch(setHelpAtomicMassAction(e.target.value))}
+                                      onChange={(e) => dispatch(setHelpDurationAction(Number(e.target.value)))}
                                       className="w-100 editFormInput border-dark"
                                       required/>
                         <Form.Label className="editFormLabel mt-3">Описание:</Form.Label>
@@ -134,20 +134,10 @@ const AddEditHelpPage: FC = () => {
                                 {statusFormat(help.status)}
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                                <Dropdown.Item eventKey="active" className="editStatus">Активный</Dropdown.Item>
-                                <Dropdown.Item eventKey="deleted" className="editStatus">Удаленный</Dropdown.Item>
+                                <Dropdown.Item eventKey="1" className="editStatus">Активный</Dropdown.Item>
+                                <Dropdown.Item eventKey="0" className="editStatus">Удаленный</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Form.Label className="editFormLabel mt-3">Период полураспада (то, что видно на экране):</Form.Label>
-                        <Form.Control value={help.period_time_text}
-                                      onChange={(e) => dispatch(setHelpPeriodTimeTextAction(e.target.value))}
-                                      className="w-100 editFormInput border-dark"
-                                      required/>
-                        <Form.Label className="editFormLabel mt-3">Период полураспада в секундах:</Form.Label>
-                        <Form.Control value={help.period_time}
-                                      onChange={(e) => dispatch(setHelpPeriodTimeAction(e.target.value))}
-                                      className="w-100 editFormInput border-dark"
-                                      required/>
                         {helpId ? ( <>
                         {help.attributes?.length !== 0 && (
                         <>

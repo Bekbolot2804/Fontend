@@ -178,7 +178,7 @@ const helpSlice = createSlice({
         setHelpStatus(state, {payload}) {
             state.help.status = payload
         },
-        setHelpAtomicMass(state, {payload}) {
+        setHelpDuration(state, {payload}) {
             state.help.duration = payload
         },
         setHelpAttributeValue(state, {payload}) {
@@ -233,7 +233,7 @@ export const {
     setHelpName: setHelpNameAction,
     setHelpDescription: setHelpDescriptionAction,
     setHelpStatus: setHelpStatusAction,
-    setHelpAtomicMass: setHelpAtomicMassAction,
+    setHelpDuration: setHelpDurationAction,
     setHelpAttributeValue: setHelpAttributeValueAction,
     setHelpAttributeAddName: setHelpAttributeAddNameAction,
     setHelpAttributeAddValue: setHelpAttributeAddValueAction
