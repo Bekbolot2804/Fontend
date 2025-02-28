@@ -129,7 +129,7 @@ const LesionsPage: FC = () => {
                 <Table className="tableStyle">
                     <thead>
                         <tr>
-                            <th>ID Распада</th>
+                            <th>ID поражениеа</th>
                             <th>Дата создания</th>
                             <th>Дата формирования</th>
                             <th>Дата завершения</th>

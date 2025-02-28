@@ -5,6 +5,6 @@ import { generateApi } from 'swagger-typescript-api';
 generateApi({
     name: 'Api.ts',
     output: resolve(process.cwd(), './src/api'),
-    url: 'http://localhost:8080/swagger/?format=openapi',
+    url: 'https://127.0.0.1:8000/swagger/?format=openapi',
     httpClientType: 'axios',
 });

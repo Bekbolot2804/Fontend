@@ -60,7 +60,7 @@ const HelpsTablePage: FC = () => {
                     <Table className="tableStyle">
                         <thead>
                             <tr>
-                                <th>ID Элемента</th>
+                                <th>ID Протокола</th>
                                 <th>Название</th>
                                 <th>Статус</th>
                                 <th></th>

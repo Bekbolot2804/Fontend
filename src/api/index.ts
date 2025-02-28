@@ -1,9 +1,8 @@
 import { NavigateFunction } from 'react-router-dom';
 import { Api } from './Api';
-import { ROUTES } from '../Routes';
 
 export const api = new Api({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'https://127.0.0.1:3000/api',
 });
 
 

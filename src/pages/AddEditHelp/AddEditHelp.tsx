@@ -91,7 +91,7 @@ const AddEditHelpPage: FC = () => {
                                       {path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, 
                                       {label: 'Редактирование помощи'}]}/>
             ) : (
-                <BreadCrumbs crumbs={[{path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, {label: 'Создание элемента'}]}/>
+                <BreadCrumbs crumbs={[{path: ROUTES.HELPS_TABLE, label: ROUTE_LABELS.HELPS_TABLE}, {label: 'Создание Протокола'}]}/>
             )}
             {loading ? (
                 <div  className='d-flex justify-content-center align-items-center'>

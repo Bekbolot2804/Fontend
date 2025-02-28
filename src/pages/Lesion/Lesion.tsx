@@ -97,7 +97,7 @@ const LesionPage: FC = () => {
                                 <Button variant="danger" className="customButton" onClick={handleDelete}>Удалить</Button>
                             </>
                         ) : (
-                            <h1 className="lesionH1">В распаде нет элементов</h1>
+                            <h1 className="lesionH1">В поражениее нет Протоколов</h1>
                         )}
                     </div>
                 ) : (<></>)}
