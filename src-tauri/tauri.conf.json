@@ -1,20 +1,21 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
-  "build": {
-    "distDir": "../dist",
-    "devPath": "http://localhost:5173"
-  },
   "package": {
-    "productName": "handbook",
-    "version": "0.1.0"
+    "productName": "MyApp",
+    "packageName": "myapp",
+    "description": "My awesome app",
+    "keywords": [],
+    "authors": "Bek",
+    "license": "MIT",
+    "homepage": "",
+    "identifier": "com.example.myapp"
   },
-  "tauri": {
-    "android": {
-      "package": "com.helper.handbook"
-    },
-    "bundle": {
-      "active": true,
-      "targets": ["android"]
-    }
+  "build": {
+    "targets": ["android"]
+  },
+  "android": {
+    "package": "com.example.myapp",
+    "versionCode": 1,
+    "minSdkVersion": 21,
+    "targetSdkVersion": 30
   }
 }
