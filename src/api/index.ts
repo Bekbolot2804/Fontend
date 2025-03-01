@@ -3,7 +3,7 @@ import { Api } from './Api';
 import { ROUTES } from '../Routes';
 
 export const api = new Api({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'http://172.20.10.8:3000/api',
 });
 
 
